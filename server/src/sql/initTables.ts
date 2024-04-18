@@ -24,16 +24,16 @@ const db = await mysql.createConnection({
 
 await db.connect().then(() => console.log("Connected to MySQL"));
 
+await db.beginTransaction();
 try {
-    await db.beginTransaction();
-    const promises = sqlScripts.map(async (script: string) => db.query(script));
-    await Promise.all(promises);
+    for await (const script of sqlScripts) {
+        await db.query(script);
+    }
     await db.commit();
-
     console.log("Tables created successfully!");
 } catch (error) {
     await db.rollback();
-    console.error(error);
+    console.log(error);
 }
 
 await db.end().then(() => console.log("Connection closed"));
