@@ -5,7 +5,6 @@ import "dotenv/config";
 
 const filePath = import.meta.url.replace('file:///', '');
 const initSqlPath = path.resolve(path.dirname(filePath), '../../src/sql/init.sql')
-console.log(initSqlPath);
 
 const sqlScripts = fs.readFileSync(initSqlPath, 'utf8')
     .toString()
