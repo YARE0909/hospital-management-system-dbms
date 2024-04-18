@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS patients (
     gender ENUM('male', 'female') NOT NULL,
     mobile_no CHAR(10) NOT NULL,
     email VARCHAR(100) NOT NULL,
+    `password` VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
@@ -25,6 +26,7 @@ CREATE TABLE IF NOT EXISTS doctors (
     gender ENUM('male', 'female') NOT NULL,
     mobile_no CHAR(10) NOT NULL,
     email VARCHAR(100) NOT NULL,
+    `password` VARCHAR(100) NOT NULL,
     department_id CHAR(36) NOT NULL,
     specialization VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
