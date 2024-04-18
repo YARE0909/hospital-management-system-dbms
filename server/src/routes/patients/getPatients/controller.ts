@@ -17,7 +17,7 @@ export default async function getPatients(req: Request, res: Response): Promise<
 
         response.hasError = false;
         response.message = "Patients fetched successfully";
-        response.data = patients;
+        response.data = { patients };
         return response;
     } catch (err) {
         if (isValidationError(err)) {
