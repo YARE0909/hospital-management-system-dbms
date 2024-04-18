@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import "dotenv/config";
 
 let connectionInstance: mysql.Connection | null = null;
 

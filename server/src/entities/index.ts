@@ -1,0 +1,1 @@
+export * as Patients from "./patients/index.js";
