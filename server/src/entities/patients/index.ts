@@ -14,3 +14,8 @@ export async function getPatients() {
     }))
     return patients;
 }
+
+export async function registerPatient(dataToInsert: { firstName: string, lastName: string | null, dateOfBirth: Date, gender: string, mobileNo: string, email: string, password: string }) {
+    const { firstName, lastName, dateOfBirth, gender, mobileNo, email, password } = dataToInsert;
+    await db.query("INSERT INTO patients(first_name, last_name, date_of_birth, gender, mobile_no, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)", [firstName, lastName, dateOfBirth, gender, mobileNo, email, password])
+}
