@@ -6,6 +6,7 @@ declare global {
             MYSQL_PORT: number;
             MYSQL_DATABASE: string;
             MYSQL_PASSWORD: string;
+            JWT_SECRET: string;
         }
     }
 }
