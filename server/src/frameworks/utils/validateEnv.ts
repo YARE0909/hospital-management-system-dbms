@@ -8,6 +8,7 @@ export function validateEnv() {
         MYSQL_HOST: str(),
         MYSQL_PORT: port(),
         MYSQL_DATABASE: str(),
-        MYSQL_PASSWORD: str()
+        MYSQL_PASSWORD: str(),
+        JWT_SECRET: str(),
     });
 }
