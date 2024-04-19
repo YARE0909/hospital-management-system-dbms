@@ -72,7 +72,6 @@ export function RegisterPatient() {
       gender: values.gender,
       mobileNo: values.mobileNo,
       email: values.email,
-      password: "12345678",
     });
     if (response) {
       toast({
