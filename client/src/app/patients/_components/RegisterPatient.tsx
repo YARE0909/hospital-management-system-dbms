@@ -25,8 +25,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { server } from "@/lib/server";
-import registerPatient from "../actions/registerPatient";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const formSchema = z.object({
   firstName: z.string().nonempty("First name is required"),
@@ -34,7 +41,7 @@ export const formSchema = z.object({
   dateOfBirth: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Invalid date format" }),
-  gender: z.enum(["male", "female", "other"]).optional(),
+  gender: z.enum(["male", "female"]),
   mobileNo: z
     .string()
     .regex(/^\d{10}$/, { message: "Invalid mobile number format" }),
@@ -58,7 +65,15 @@ export function RegisterPatient() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    const response = await registerPatient(values);
+    const response = await server.post("/patients/register", {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      dateOfBirth: values.dateOfBirth,
+      gender: values.gender,
+      mobileNo: values.mobileNo,
+      email: values.email,
+      password: "12345678",
+    });
     if (response) {
       toast({
         title: "Patient Registered!",
@@ -96,7 +111,9 @@ export function RegisterPatient() {
                   <FormControl>
                     <Input placeholder="John" {...field} />
                   </FormControl>
-                  <FormDescription>Enter patient's first name</FormDescription>
+                  <FormDescription>
+                    Enter patient&apos;s first name
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -110,7 +127,9 @@ export function RegisterPatient() {
                   <FormControl>
                     <Input placeholder="Doe" {...field} />
                   </FormControl>
-                  <FormDescription>Enter patient's last name</FormDescription>
+                  <FormDescription>
+                    Enter patient&apos;s last name
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -125,8 +144,33 @@ export function RegisterPatient() {
                     <Input type="date" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Enter patient's date of birth
+                    Enter patient&apos;s date of birth
                   </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>Patient gender</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -145,7 +189,7 @@ export function RegisterPatient() {
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter patient's email address
+                    Enter patient&apos;s email address
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -161,14 +205,14 @@ export function RegisterPatient() {
                     <Input placeholder="1234567890" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Enter patient's mobile number
+                    Enter patient&apos;s mobile number
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <SheetFooter>
-              <Button type="submit">Submit</Button>
+              <Button className="mt-1" type="submit">Submit</Button>
               <SheetClose asChild>
                 <Button>Done</Button>
               </SheetClose>
