@@ -1,12 +1,9 @@
 export interface Patient {
-    id: string;
-    first_name: string;
-    last_name: string;
-    date_of_birth: Date;
-    gender: "male" | "female";
-    mobile_no: string;
-    email: string;
-    password: string;
-    created_at: Date;
-    updated_at: Date;
+    firstName: string,
+    lastName: string | null,
+    dateOfBirth: Date,
+    gender: string,
+    mobileNo: string,
+    email: string,
+    password: string
 }

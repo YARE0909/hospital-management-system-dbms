@@ -57,3 +57,14 @@ CREATE TABLE IF NOT EXISTS appointment_details (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT appointment_details_appointment_id_fk FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS medical_records (
+    id CHAR(36) DEFAULT (UUID()) PRIMARY KEY,
+    appointment_id CHAR(36) NOT NULL,
+    height DECIMAL(5, 2) NOT NULL,
+    `weight` DECIMAL(5, 2) NOT NULL,
+    blood_pressure INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT medical_records_appointment_id_fk FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE ON UPDATE CASCADE
+);

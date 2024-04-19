@@ -1,0 +1,1 @@
+export { default as RegisterAppointmentRouter } from "./registerAppointment/router.js";

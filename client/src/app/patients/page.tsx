@@ -20,7 +20,7 @@ interface Patient {
 }
 
 async function getPatientList() {
-  const patientListResponse = await server.get("/patients/get");
+  const patientListResponse = await server.get("/patients/list");
 
   return patientListResponse.data.data.patients;
 }

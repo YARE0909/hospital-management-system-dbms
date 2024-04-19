@@ -110,9 +110,6 @@ export function RegisterPatient() {
                   <FormControl>
                     <Input placeholder="John" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Enter patient&apos;s first name
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -126,9 +123,6 @@ export function RegisterPatient() {
                   <FormControl>
                     <Input placeholder="Doe" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Enter patient&apos;s last name
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -142,9 +136,6 @@ export function RegisterPatient() {
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Enter patient&apos;s date of birth
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -169,7 +160,6 @@ export function RegisterPatient() {
                       <SelectItem value="female">Female</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>Patient gender</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -187,9 +177,6 @@ export function RegisterPatient() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Enter patient&apos;s email address
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -203,9 +190,6 @@ export function RegisterPatient() {
                   <FormControl>
                     <Input placeholder="1234567890" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Enter patient&apos;s mobile number
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

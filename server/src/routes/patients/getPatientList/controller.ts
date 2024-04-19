@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 import { fromZodError, isValidationError } from "zod-validation-error";
 import { Patients } from "#src/entities/index.js";
 
-export default async function getPatients(req: Request, res: Response): Promise<ServerResponse> {
+export default async function getPatientsList(req: Request, res: Response): Promise<ServerResponse> {
     const response: ServerResponse = { hasError: true, message: "An error occured while getting patients", data: null }
 
     try {
@@ -20,7 +20,7 @@ export default async function getPatients(req: Request, res: Response): Promise<
         response.data = { patients };
         return response;
     } catch (err) {
-        if (isValidationError(err)) {
+        if (err instanceof ZodError) {
             const formattedError = fromZodError(err as unknown as ZodError);
             console.error(formattedError);
             response.message = formattedError.details[0].message;

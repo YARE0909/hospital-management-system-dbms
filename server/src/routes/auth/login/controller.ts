@@ -31,7 +31,7 @@ export default async function login(req: Request, res: Response): Promise<Server
 
         return response;
     } catch (err) {
-        if (isValidationError(err)) {
+        if (err instanceof ZodError) {
             const formattedError = fromZodError(err as unknown as ZodError);
             console.error(formattedError);
             response.message = formattedError.details[0].message;
