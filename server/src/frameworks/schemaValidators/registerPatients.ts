@@ -7,5 +7,4 @@ export const RegisterPatientSchema = z.object({
     gender: z.enum(["male", "female"], { required_error: "Gender is required", invalid_type_error: "Gender must be either male or female" }),
     mobileNo: z.string({ required_error: "Mobile number is required", invalid_type_error: "Mobile number must be a string" }).min(10, { message: "Mobile number must be minimum 10 digits" }).max(10, { message: "Mobile number must be maximum 10 digits" }),
     email: z.string({ required_error: "Email is required", invalid_type_error: "Email must be a string" }).email({ message: "Invalid email" }),
-    password: z.string({ required_error: "Password is required", invalid_type_error: "Password must be a string" }).min(8, { message: "Password must be minimum 8 characters" }),
 }).strict();
