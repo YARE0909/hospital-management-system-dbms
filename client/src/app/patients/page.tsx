@@ -38,7 +38,7 @@ export default async function Page() {
           <RegisterPatient />
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full px-0 lg:px-10">
         <Table>
           <TableCaption>A list of all patients.</TableCaption>
           <TableHeader>

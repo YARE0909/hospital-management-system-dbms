@@ -212,7 +212,7 @@ export function RegisterPatient() {
               )}
             />
             <SheetFooter>
-              <Button className="mt-1" type="submit">Submit</Button>
+              <Button className="mt-1 lg:mt-0" type="submit">Register</Button>
               <SheetClose asChild>
                 <Button>Done</Button>
               </SheetClose>

@@ -1,16 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { CalendarClock, LayoutDashboard, Menu, User } from "lucide-react";
@@ -20,7 +15,7 @@ export function MobileSidebar() {
   return (
     <Sheet>
       <SheetTrigger className="absolute top-2 left-2" asChild>
-        <Button className="w-full flex justify-start" variant="ghost">
+        <Button className="flex justify-start" variant="link">
           <Menu className="mr-2 h-4 w-4" />
         </Button>
       </SheetTrigger>
