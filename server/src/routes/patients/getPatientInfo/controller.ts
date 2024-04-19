@@ -10,15 +10,15 @@ export default async function getPatientInfo(req: Request, res: Response): Promi
 
     try {
         const { patientId } = SchemaValidators.GetPatientInfoSchema.parse(req.body);
-        const patientInfo = await Patients.getPatientById(patientId);
-        if (!patientInfo) {
+        const result = await Patients.getPatientById(patientId);
+        if (!result) {
             response.message = "Patient not found";
             return response;
         }
 
         response.hasError = false;
         response.message = "Patient info fetched successfully";
-        response.data = { patientInfo };
+        response.data = result;
         return response;
     } catch (err) {
         if (err instanceof ZodError) {

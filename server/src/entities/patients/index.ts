@@ -82,13 +82,15 @@ function _formatData(rows: any[]) {
     const appointments = Array.from(appointmentsMap.values());
 
     return {
-        patientId: rows[0].patientId,
-        firstName: rows[0].firstName,
-        lastName: rows[0].lastName,
-        dateOfBirth: rows[0].dateOfBirth,
-        gender: rows[0].gender,
-        email: rows[0].email,
-        mobileNo: rows[0].mobileNo,
+        patientInfo: {
+            patientId: rows[0].patientId,
+            firstName: rows[0].firstName,
+            lastName: rows[0].lastName,
+            dateOfBirth: rows[0].dateOfBirth,
+            gender: rows[0].gender,
+            email: rows[0].email,
+            mobileNo: rows[0].mobileNo,
+        },
         appointments
     };
 }
