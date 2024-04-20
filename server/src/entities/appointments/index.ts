@@ -16,6 +16,7 @@ export async function getAppointmentsList() {
     const response = result.map((res: any) => ({
         patientFirstName: res.first_name,
         patientLastName: res.last_name ?? null,
+        patientGender: res.gender,
         appointmentType: res.type,
         appointmentStatus: res.status,
         appointmentDate: res.appointment_date,

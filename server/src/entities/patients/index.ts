@@ -8,8 +8,7 @@ export async function getPatients() {
         id: res.id,
         firstName: res.first_name,
         lastName: res.last_name,
-        dateOfBirth: res.date_of_birth,
-        gender: res.gender,
+        gender: res.gender === "male" ? "Male" : "Female",
         mobileNo: res.mobile_no,
         email: res.email,
     }))
