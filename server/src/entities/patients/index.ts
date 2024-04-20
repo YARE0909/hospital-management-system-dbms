@@ -147,6 +147,6 @@ export async function getGenderRatio() {
 }
 
 export async function getPatientCount() {
-    const [result] = await db.query("SELECT COUNT(*) as patientCount FROM doctors") as any;
+    const [result] = await db.query("SELECT COUNT(*) as patientCount FROM patients") as any;
     return result[0].patientCount;
 }
