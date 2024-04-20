@@ -2,6 +2,7 @@ import { Router } from "express";
 import { RegisterPatientsRouter, GetPatientsListRouter, GetPatientInfoRouter } from "./patients/index.js";
 import { LoginRouter } from "./auth/index.js";
 import { RegisterAppointmentRouter, GetAppointmentListRouter } from "./appointments/index.js";
+import { GetStatisticsRouter } from "./statistics/index.js";
 
 export default () => {
     const app = Router();
@@ -17,6 +18,9 @@ export default () => {
     // Appointment Route
     app.use("/appointments/register", RegisterAppointmentRouter);
     app.use("/appointments/list", GetAppointmentListRouter);
+
+    // Statistics Route
+    app.use("/statistics", GetStatisticsRouter);
 
     return app;
 };

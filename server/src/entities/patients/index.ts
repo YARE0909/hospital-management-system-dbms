@@ -135,3 +135,18 @@ export async function getPatientById(id: string) {
     return _formatData(rows);
 
 }
+
+export async function getGenderRatio() {
+    const [result] = await db.query(`
+    SELECT 
+        SUM(CASE WHEN gender = 'male' THEN 1 ELSE 0 END) AS maleCount,
+        SUM(CASE WHEN gender = 'female' THEN 1 ELSE 0 END) AS femaleCount
+    FROM patients
+`) as any;
+    return result[0];
+}
+
+export async function getPatientCount() {
+    const [result] = await db.query("SELECT COUNT(*) as patientCount FROM doctors") as any;
+    return result[0].patientCount;
+}

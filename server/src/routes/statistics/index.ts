@@ -1,0 +1,1 @@
+export { default as GetStatisticsRouter } from "./getStatistics/router.js";

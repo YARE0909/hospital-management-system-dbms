@@ -17,3 +17,24 @@ export async function getDoctorByEmail(email: string) {
 
     return doctorInfo[0];
 }
+
+export async function getDoctors() {
+    const [result] = await db.query("SELECT * FROM doctors") as unknown as Doctor[][];
+    const doctors = result.map((res) => ({
+        id: res.id,
+        firstName: res.first_name,
+        lastName: res.last_name,
+        dateOfBirth: res.date_of_birth,
+        gender: res.gender,
+        mobileNo: res.mobile_no,
+        email: res.email,
+        specialization: res.specialization,
+    }));
+
+    return doctors;
+}
+
+export async function getDoctorCount() {
+    const [result] = await db.query("SELECT COUNT(*) as doctorCount FROM doctors") as any;
+    return result[0].doctorCount;
+}
