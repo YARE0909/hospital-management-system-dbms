@@ -11,6 +11,7 @@ export async function getAppointmentsList() {
     const [result] = await db.query(`
     SELECT * FROM appointments
     INNER JOIN patients ON appointments.patient_id = patients.id
+    ORDER BY appointment_date DESC
     `
     ) as any;
     const response = result.map((res: any) => ({
