@@ -3,11 +3,9 @@ import { server } from "@/lib/api/server";
 import PatientListType from "@/lib/types/PatientListType";
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
-import { PatientListTable } from "./_components/patientTable";
-import { Button } from "@/components/ui/button";
-import { CirclePlus } from "lucide-react";
-import RegisterPatient from "./_components/registerPatient";
 import nookies from "nookies";
+import RegisterPatient from "./_components/RegisterPatient";
+import { PatientListTable } from "./_components/patientTable";
 
 const Index = ({ patientList }: { patientList: PatientListType[] }) => {
   const [patients, setPatients] = useState<PatientListType[]>(patientList);
