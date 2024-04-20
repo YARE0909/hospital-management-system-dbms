@@ -2,22 +2,22 @@ import type { ServerResponse } from "#src/types/index.js";
 import { type Request, type Response } from "express";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { Patients } from "#src/entities/index.js";
+import { Doctors } from "#src/entities/index.js";
 
-export default async function getPatientsList(req: Request, res: Response): Promise<ServerResponse> {
-    const response: ServerResponse = { hasError: true, message: "An error occured while getting patients", data: null }
+export default async function getDoctorsList(req: Request, res: Response): Promise<ServerResponse> {
+    const response: ServerResponse = { hasError: true, message: "An error occured while getting doctors", data: null }
 
     try {
-        const patients = await Patients.getPatients();
-        if (!patients?.length) {
+        const doctors = await Doctors.getDoctors();
+        if (!doctors?.length) {
             response.hasError = false;
-            response.message = "No patients found";
+            response.message = "No doctors found";
             return response;
         }
 
         response.hasError = false;
-        response.message = "Patients fetched successfully";
-        response.data = { patients };
+        response.message = "Doctors fetched successfully";
+        response.data = { doctors };
         return response;
     } catch (err) {
         if (err instanceof ZodError) {

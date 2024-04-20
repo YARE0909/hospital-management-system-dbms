@@ -1,6 +1,6 @@
 import { Patient } from "#src/types/index.js";
-import { email } from "envalid";
 import { db } from "../../sql/index.js";
+import { _formatData } from "./_utils.js";
 
 export async function getPatients() {
     const [result] = await db.query("SELECT * FROM patients") as any;
@@ -38,68 +38,6 @@ export async function getPatientByEmail(email: string) {
     }
 
     return patientInfo;
-}
-
-function _formatData(rows: any[]) {
-    const appointmentsMap = new Map();
-
-    rows.forEach(row => {
-        const { appointmentId, appointmentDate, appointmentStatus, appointmentType, condition, prescription, notes, height, weight, bloodPressure, doctorFirstName, doctorLastName, doctorGender, doctorMobileNo, doctorEmail } = row;
-
-        if (appointmentId) {
-            if (!appointmentsMap.has(appointmentId)) {
-                appointmentsMap.set(appointmentId, {
-                    appointmentId,
-                    appointmentDate,
-                    appointmentStatus,
-                    appointmentType,
-                    appointmentDetails: [],
-                    medicalRecordInfo: null,
-                    doctorInfo: {
-                        firstName: doctorFirstName || null,
-                        lastName: doctorLastName || null,
-                        gender: doctorGender || null,
-                        mobileNo: doctorMobileNo || null,
-                        email: doctorEmail || null
-                    }
-                });
-            }
-
-            const appointment = appointmentsMap.get(appointmentId);
-            if (condition !== null) {
-                appointment.appointmentDetails.push({
-                    condition: condition || null,
-                    prescription: prescription || null,
-                    notes: notes || null
-                });
-            }
-
-            if (height || weight || bloodPressure) {
-                appointment.medicalRecordInfo = {
-                    height: parseFloat(height) || null,
-                    weight: parseFloat(weight) || null,
-                    bloodPressure: bloodPressure || null
-                };
-            }
-
-            appointmentsMap.set(appointmentId, appointment);
-        }
-    });
-
-    const appointments = Array.from(appointmentsMap.values());
-
-    return {
-        patientInfo: {
-            patientId: rows[0].patientId,
-            firstName: rows[0].firstName,
-            lastName: rows[0].lastName,
-            dateOfBirth: rows[0].dateOfBirth,
-            gender: rows[0].gender,
-            email: rows[0].email,
-            mobileNo: rows[0].mobileNo,
-        },
-        appointments
-    };
 }
 
 export async function getPatientById(id: string) {
@@ -144,7 +82,7 @@ export async function getGenderRatio() {
         SUM(CASE WHEN gender = 'male' THEN 1 ELSE 0 END) AS maleCount,
         SUM(CASE WHEN gender = 'female' THEN 1 ELSE 0 END) AS femaleCount
     FROM patients
-`) as any;
+    `) as any;
     return result[0];
 }
 

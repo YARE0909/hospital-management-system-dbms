@@ -1,0 +1,1 @@
+export { default as GetDoctorsListRouter } from "./getDoctorsList/router.js";

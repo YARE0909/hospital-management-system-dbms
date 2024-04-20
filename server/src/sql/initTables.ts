@@ -24,15 +24,15 @@ const db = await mysql.createConnection({
 
 await db.connect().then(() => console.log("Connected to MySQL"));
 
-await db.beginTransaction();
+await db.query("START TRANSACTION");
 try {
     for await (const script of sqlScripts) {
         await db.query(script);
     }
-    await db.commit();
+    await db.query("COMMIT");
     console.log("Tables created successfully!");
 } catch (error) {
-    await db.rollback();
+    await db.query("ROLLBACK");
     console.log(error);
 }
 
