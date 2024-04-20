@@ -9,8 +9,12 @@ export async function createAppointment(dataToInsert: any) {
 
 export async function getAppointmentsList() {
     const [result] = await db.query(`
-    SELECT * FROM appointments
+    SELECT *,
+        doctors.first_name AS doctor_first_name,
+        doctors.last_name AS doctor_last_name
+    FROM appointments
     INNER JOIN patients ON appointments.patient_id = patients.id
+    INNER JOIN doctors ON appointments.doctor_id = doctors.id
     ORDER BY appointment_date ASC
     `
     ) as any;
@@ -18,6 +22,8 @@ export async function getAppointmentsList() {
         patientFirstName: res.first_name,
         patientLastName: res.last_name ?? null,
         patientGender: res.gender,
+        doctorFirstName: res.doctor_first_name,
+        doctorLastName: res.doctor_last_name,
         appointmentType: res.type,
         appointmentStatus: res.status,
         appointmentDate: res.appointment_date,
