@@ -46,36 +46,44 @@ function _formatData(rows: any[]) {
     rows.forEach(row => {
         const { appointmentId, appointmentDate, appointmentStatus, appointmentType, condition, prescription, notes, height, weight, bloodPressure, doctorFirstName, doctorLastName, doctorGender, doctorMobileNo, doctorEmail } = row;
 
-        if (!appointmentsMap.has(appointmentId)) {
-            appointmentsMap.set(appointmentId, {
-                appointmentId,
-                appointmentDate,
-                appointmentStatus,
-                appointmentType,
-                appointmentDetails: [],
-                medicalRecordInfo: {
-                    height: parseFloat(height),
-                    weight: parseFloat(weight),
-                    bloodPressure,
-                },
-                doctorInfo: {
-                    firstName: doctorFirstName,
-                    lastName: doctorLastName,
-                    gender: doctorGender,
-                    mobileNo: doctorMobileNo,
-                    email: doctorEmail
-                }
-            });
+        if (appointmentId) {
+            if (!appointmentsMap.has(appointmentId)) {
+                appointmentsMap.set(appointmentId, {
+                    appointmentId,
+                    appointmentDate,
+                    appointmentStatus,
+                    appointmentType,
+                    appointmentDetails: [],
+                    medicalRecordInfo: null,
+                    doctorInfo: {
+                        firstName: doctorFirstName || null,
+                        lastName: doctorLastName || null,
+                        gender: doctorGender || null,
+                        mobileNo: doctorMobileNo || null,
+                        email: doctorEmail || null
+                    }
+                });
+            }
+
+            const appointment = appointmentsMap.get(appointmentId);
+            if (condition !== null) {
+                appointment.appointmentDetails.push({
+                    condition: condition || null,
+                    prescription: prescription || null,
+                    notes: notes || null
+                });
+            }
+
+            if (height || weight || bloodPressure) {
+                appointment.medicalRecordInfo = {
+                    height: parseFloat(height) || null,
+                    weight: parseFloat(weight) || null,
+                    bloodPressure: bloodPressure || null
+                };
+            }
+
+            appointmentsMap.set(appointmentId, appointment);
         }
-
-        const appointment = appointmentsMap.get(appointmentId);
-        appointment.appointmentDetails.push({
-            condition,
-            prescription,
-            notes
-        });
-
-        appointmentsMap.set(appointmentId, appointment);
     });
 
     const appointments = Array.from(appointmentsMap.values());
@@ -93,7 +101,6 @@ function _formatData(rows: any[]) {
         appointments
     };
 }
-
 
 export async function getPatientById(id: string) {
     const [rows] = await db.query(
@@ -121,19 +128,14 @@ export async function getPatientById(id: string) {
             doctors.mobile_no AS doctorMobileNo,
             doctors.email AS doctorEmail
         FROM patients
-        INNER JOIN appointments ON patients.id = appointments.patient_id
+        LEFT JOIN appointments ON patients.id = appointments.patient_id
         LEFT JOIN appointment_details ON appointments.id = appointment_details.appointment_id
         LEFT JOIN medical_records ON appointments.id = medical_records.appointment_id
-        INNER JOIN doctors ON appointments.doctor_id = doctors.id
+        LEFT JOIN doctors ON appointments.doctor_id = doctors.id
         WHERE patients.id = ?`
         , [id]) as any;
 
-    if (rows.length === 0) {
-        return null;
-    }
-
     return _formatData(rows);
-
 }
 
 export async function getGenderRatio() {
