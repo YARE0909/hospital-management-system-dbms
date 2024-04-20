@@ -41,4 +41,5 @@ export interface Appointment {
 export interface PatientData {
   patientInfo: PatientInfo;
   appointments: Appointment[];
+  latestMedicalRecordInfo: MedicalRecordInfo | null;
 }

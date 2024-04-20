@@ -15,7 +15,6 @@ export function AppointmentListTable({
 }: {
   appointmentList: AppointmentListType[];
 }) {
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <Table>
@@ -35,7 +34,13 @@ export function AppointmentListTable({
                 <TableCell className="font-medium">
                   {appointment.patientFirstName} {appointment.patientLastName}
                 </TableCell>
-                <TableCell>{appointment.appointmentType}</TableCell>
+                <TableCell>
+                  {appointment.appointmentType === "checkUp"
+                    ? "Check Up"
+                    : appointment.appointmentType === "followUp"
+                    ? "Follow Up"
+                    : "Routine"}
+                </TableCell>
                 <TableCell>
                   <Badge
                     variant="secondary"
@@ -44,8 +49,6 @@ export function AppointmentListTable({
                         ? "text-orange-500 font-bold pb-1"
                         : appointment.appointmentStatus === "cancelled"
                         ? "text-red-500 font-bold pb-1"
-                        : appointment.appointmentStatus === "checkUp"
-                        ? "text-blue-500 font-bold pb-1"
                         : appointment.appointmentStatus === "noShow"
                         ? "text-purple-500 font-bold pb-1"
                         : "text-green-500 font-bold pb-1"

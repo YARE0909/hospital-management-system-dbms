@@ -1,17 +1,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  CalendarClock,
-  CalendarIcon,
-  CirclePlus,
-  Gauge,
-  Menu,
-  UserRound,
-} from "lucide-react";
+import { CalendarIcon, CheckIcon, CirclePlus } from "lucide-react";
 import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { z } from "zod";
@@ -20,21 +14,30 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { toast } from "@/components/ui/use-toast";
+import { server } from "@/lib/api/server";
+import { GetServerSideProps } from "next";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -42,33 +45,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
-import { server } from "@/lib/api/server";
 
 const schema = z.object({
-  firstName: z.string().min(1).max(50),
-  lastName: z.string().min(1).max(50),
-  dateOfBirth: z.date(),
-  gender: z.enum(["male", "female"]),
-  mobileNo: z.string().regex(/^\d{10}$/),
-  email: z.string().email(),
+  patientId: z.string().min(1).max(50),
+  doctorId: z.string().min(1).max(50),
+  appointmentDate: z.date(),
+  appointmentType: z.enum(["checkUp", "routine", "followUp"]),
 });
 
-const RegisterAppointment = () => {
+const RegisterAppointment = ({
+  patientList,
+  doctorList,
+}: {
+  patientList: any;
+  doctorList: any;
+}) => {
+  console.log({ patientList });
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      dateOfBirth: "",
-      gender: "male",
-      mobileNo: "",
+      patientId: "",
+      doctorId: "",
+      appointmentDate: "",
+      appointmentType: "checkUp",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
+    console.log({ values });
     try {
-      await server.post("/patients/register", values);
+      await server.post("/appointments/register", values);
       toast({
         title: "Patient registered successfully!",
         description: "The patient has been added to the database.",
@@ -97,80 +103,82 @@ const RegisterAppointment = () => {
           className="flex flex-col justify-center items-center max-h-screen overflow-auto px-4"
         >
           <div className="w-full md:max-w-[40rem]">
-            <div>
+            <SheetHeader>
               <h1 className="text-2xl font-bold">Register Appointment</h1>
-            </div>
+            </SheetHeader>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-3"
+                className="space-y-6 mt-4 w-full"
               >
                 <FormField
                   control={form.control}
-                  name="firstName"
+                  name="patientId"
                   render={({ field }: any) => (
-                    <FormItem>
-                      <FormLabel>First name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="John" {...field} />
-                      </FormControl>
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>Patient</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? patientList.find(
+                                    (patient: any) =>
+                                      patient.value === field.value
+                                  )?.label
+                                : "Select patient"}
+                              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
+                          <Command>
+                            <CommandInput
+                              placeholder="Search patient..."
+                              className="h-9"
+                            />
+                            <CommandEmpty>No patient found.</CommandEmpty>
+                            <CommandGroup>
+                              {patientList?.map((patient: any) => (
+                                <CommandItem
+                                  value={patient.label}
+                                  key={patient.value}
+                                  onSelect={() => {
+                                    form.setValue("patientId", patient.value);
+                                  }}
+                                >
+                                  {patient.label}
+                                  <CheckIcon
+                                    className={cn(
+                                      "ml-auto h-4 w-4",
+                                      patient.value === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="lastName"
-                  render={({ field }: any) => (
-                    <FormItem>
-                      <FormLabel>Last name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }: any) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="JohnDoe@example.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="mobileNo"
-                  render={({ field }: any) => (
-                    <FormItem>
-                      <FormLabel>Mobile Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="1234567890"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="dateOfBirth"
+                  name="appointmentDate"
                   render={({ field }: any) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Date of birth</FormLabel>
+                      <FormLabel>Appointment Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -208,29 +216,92 @@ const RegisterAppointment = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="gender"
+                  name="appointmentType"
                   render={({ field }: any) => (
                     <FormItem>
-                      <FormLabel>Gender</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select gender" />
+                            <SelectValue placeholder="Select appointment type" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="male">Male</SelectItem>
-                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="checkUp">Check Up</SelectItem>
+                          <SelectItem value="routine">Routine</SelectItem>
+                          <SelectItem value="followUp">Follow Up</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <SheetClose asChild>
+                <FormField
+                  control={form.control}
+                  name="doctorId"
+                  render={({ field }: any) => (
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>Doctor</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? doctorList.find(
+                                    (doctor: any) =>
+                                      doctor.value === field.value
+                                  )?.label
+                                : "Select doctor"}
+                              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
+                          <Command>
+                            <CommandInput
+                              placeholder="Search doctor..."
+                              className="h-9"
+                            />
+                            <CommandEmpty>No doctor found.</CommandEmpty>
+                            <CommandGroup>
+                              {doctorList?.map((doctor: any) => (
+                                <CommandItem
+                                  value={doctor.label}
+                                  key={doctor.value}
+                                  onSelect={() => {
+                                    form.setValue("doctorId", doctor.value);
+                                  }}
+                                >
+                                  {doctor.label}
+                                  <CheckIcon
+                                    className={cn(
+                                      "ml-auto h-4 w-4",
+                                      doctor.value === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <SheetClose>
                   <Button className="w-full" type="submit">
                     Submit
                   </Button>
@@ -245,3 +316,11 @@ const RegisterAppointment = () => {
 };
 
 export default RegisterAppointment;
+
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  return {
+    props: {
+      patientList,
+    },
+  };
+};

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
+  Activity,
   CalendarClock,
   CircleUser,
-  Cross,
   Gauge,
   Menu,
   UserRound,
@@ -20,6 +20,14 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRouter } from "next/router";
 import { destroyCookie } from "nookies";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 
 export default function DashboardLayout({
   children,
@@ -39,7 +47,7 @@ export default function DashboardLayout({
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Cross className="h-6 w-6" />
+              <Activity className="h-6 w-6" />
               <span className="">MediCare</span>
             </Link>
           </div>
@@ -101,7 +109,7 @@ export default function DashboardLayout({
                   href="/"
                   className="flex items-center gap-2 font-semibold"
                 >
-                  <Cross className="h-6 w-6" />
+                  <Activity className="h-6 w-6" />
                   <span className="text-2xl">MediCare</span>
                 </Link>
                 <nav className="grid gap-2 text-lg font-medium">
@@ -130,15 +138,31 @@ export default function DashboardLayout({
               </SheetContent>
             </Sheet>
             <div>
-              <h1 className="text-2xl font-bold">
-                {router.pathname === "/dashboard"
-                  ? "Dashboard"
-                  : router.pathname
-                      .replace("/dashboard/", "")
-                      .charAt(0)
-                      .toUpperCase() +
-                    router.pathname.replace("/dashboard/", "").slice(1)}
-              </h1>
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  {router.pathname !== "/dashboard" && (
+                    <>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>
+                          {router.pathname === "/dashboard"
+                            ? "Dashboard"
+                            : router.pathname
+                                .replace("/dashboard/", "")
+                                .charAt(0)
+                                .toUpperCase() +
+                              router.pathname
+                                .replace("/dashboard/", "")
+                                .slice(1)}
+                        </BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </>
+                  )}
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
           </div>
           <DropdownMenu>

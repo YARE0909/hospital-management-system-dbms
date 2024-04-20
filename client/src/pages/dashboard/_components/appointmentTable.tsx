@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
 import AppointmentListType from "@/lib/types/AppointmentListType";
 import { Badge } from "@/components/ui/badge";
 
@@ -34,7 +33,13 @@ export function AppointmentListTable({
                 <TableCell className="font-medium">
                   {appointment.patientFirstName} {appointment.patientLastName}
                 </TableCell>
-                <TableCell>{appointment.appointmentType}</TableCell>
+                <TableCell>
+                  {appointment.appointmentType === "checkUp"
+                    ? "Check Up"
+                    : appointment.appointmentType === "followUp"
+                    ? "Follow Up"
+                    : "Routine"}
+                </TableCell>
                 <TableCell>
                   <Badge
                     variant="secondary"
@@ -43,8 +48,6 @@ export function AppointmentListTable({
                         ? "text-orange-500 font-bold pb-1 rounded-sm"
                         : appointment.appointmentStatus === "cancelled"
                         ? "text-red-500 font-bold pb-1 rounded-sm"
-                        : appointment.appointmentStatus === "checkUp"
-                        ? "text-blue-500 font-bold pb-1 rounded-sm"
                         : appointment.appointmentStatus === "noShow"
                         ? "text-purple-500 font-bold pb-1 rounded-sm"
                         : "text-green-500 font-bold pb-1 rounded-sm"
@@ -58,8 +61,7 @@ export function AppointmentListTable({
                   {new Date(appointment.appointmentDate).toDateString()}
                 </TableCell>
                 <TableCell>
-                  Dr. {appointment.doctorFirstName}{" "}
-                  {appointment.doctorLastName}
+                  Dr. {appointment.doctorFirstName} {appointment.doctorLastName}
                 </TableCell>
               </TableRow>
             ))

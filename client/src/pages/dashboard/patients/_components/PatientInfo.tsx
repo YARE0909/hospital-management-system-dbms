@@ -1,17 +1,12 @@
 import * as React from "react";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
-
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { toast } from "@/components/ui/use-toast";
 import { server } from "@/lib/api/server";
@@ -22,54 +17,24 @@ import {
   Cake,
   CircleGauge,
   Dna,
-  Droplet,
   Phone,
   Ruler,
   UserRound,
   Weight,
 } from "lucide-react";
-
-const data = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
-];
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function PatientInfo({
   patientData,
@@ -81,7 +46,7 @@ export default function PatientInfo({
   setIsOpen: any;
 }) {
   return (
-    <Drawer open={isOpen}>
+    <Drawer open={isOpen} onDrag={() => setIsOpen(false)}>
       <DrawerContent className="h-fit max-h-screen">
         <div className="px-4 w-full overflow-auto">
           <DrawerHeader>
@@ -91,23 +56,23 @@ export default function PatientInfo({
             </DrawerDescription>
           </DrawerHeader>
           <div className="px-4 flex flex-col lg:flex lg:flex-row justify-between gap-5 overflow-auto h-full">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 w-full lg:w-1/4 border-r-0 lg:border-r">
               <div className="w-fit flex flex-col gap-2">
                 <div>
                   <h1 className="text-2xl font-bold">Patient Details</h1>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <UserRound className="w-4 h-4" />
-                    <h1 className="font-medium">
+                    <UserRound color="#A3A3A3" className="w-4 h-4" />
+                    <h1>
                       {patientData?.patientInfo?.firstName}{" "}
                       {patientData?.patientInfo?.lastName}
                     </h1>
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <Cake className="w-4 h-4" />
-                      <h1 className="font-medium">
+                      <Cake color="#A3A3A3" className="w-4 h-4" />
+                      <h1>
                         {new Date(
                           patientData?.patientInfo?.dateOfBirth
                         ).toDateString()}
@@ -116,15 +81,13 @@ export default function PatientInfo({
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <AtSign className="w-4 h-4" />
-                      <h1 className="font-medium">
-                        {patientData?.patientInfo?.email}
-                      </h1>
+                      <AtSign color="#A3A3A3" className="w-4 h-4" />
+                      <h1>{patientData?.patientInfo?.email}</h1>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Dna className="w-4 h-4" />
-                    <h1 className="font-medium">
+                    <Dna color="#A3A3A3" className="w-4 h-4" />
+                    <h1>
                       {patientData?.patientInfo?.gender
                         .split("")[0]
                         .toUpperCase() +
@@ -132,10 +95,8 @@ export default function PatientInfo({
                     </h1>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    <h1 className="font-medium">
-                      {patientData?.patientInfo?.mobileNo}
-                    </h1>
+                    <Phone color="#A3A3A3" className="w-4 h-4" />
+                    <h1>{patientData?.patientInfo?.mobileNo}</h1>
                   </div>
                 </div>
               </div>
@@ -143,99 +104,129 @@ export default function PatientInfo({
                 <div>
                   <h1 className="text-2xl font-bold">Medical Record</h1>
                 </div>
-                <div>
-                  <div className="flex gap-1 text-sm items-center">
-                    <Ruler className="w-4 h-4" />
-                    <h1 className="font-medium text-2xl">
-                      {/* {patientData?.appointments[0]?.medicalRecordInfo?.height} */}
-                      1.72
-                      <span className="font-bold text-muted-foreground text-sm">
-                        m
-                      </span>
+                {patientData?.latestMedicalRecordInfo ? (
+                  <div>
+                    <div className="flex gap-2 text-sm items-center">
+                      <Ruler color="#A3A3A3" className="w-4 h-4" />
+                      <h1 className="text-2xl flex gap-1 items-center">
+                        {patientData?.latestMedicalRecordInfo?.height}
+                        <span className="font-bold text-muted-foreground text-xs">
+                          m
+                        </span>
+                      </h1>
+                    </div>
+                    <div className="flex gap-2 text-sm items-center">
+                      <Weight color="#A3A3A3" className="w-4 h-4" />
+                      <h1 className="text-2xl flex gap-1 items-center">
+                        {patientData?.latestMedicalRecordInfo?.weight}
+                        <span className="font-bold text-muted-foreground text-xs">
+                          kg
+                        </span>
+                      </h1>
+                    </div>
+                    <div className="flex gap-2 text-sm items-center">
+                      <CircleGauge color="#A3A3A3" className="w-4 h-4" />
+                      <h1 className="text-2xl flex gap-1 items-center">
+                        {patientData?.latestMedicalRecordInfo?.bloodPressure}
+                        <span className="font-bold text-muted-foreground text-xs">
+                          mmHg
+                        </span>
+                      </h1>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <h1 className="text-muted-foreground">
+                      No medical history found.
                     </h1>
                   </div>
-                  <div className="flex gap-1 text-sm items-center">
-                    <Weight className="w-4 h-4" />
-                    <h1 className="font-medium text-2xl">
-                      {/* {patientData?.appointments[0]?.medicalRecordInfo?.weight}{" "} */}
-                      70
-                      <span className="font-bold text-muted-foreground text-sm">
-                        kg
-                      </span>
-                    </h1>
-                  </div>
-                  <div className="flex gap-1 text-sm items-center">
-                    <CircleGauge className="w-4 h-4" />
-                    <h1 className="font-medium text-2xl">
-                      {/* {patientData?.appointments[0]?.medicalRecordInfo?.bloodPressure}{" "} */}
-                      120/80
-                      <span className="font-bold text-muted-foreground text-sm">
-                        mmHg
-                      </span>
-                    </h1>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
-            <div className="w-fit flex flex-col gap-5">
+            <div className="w-full lg:w-3/4 flex flex-col gap-5">
               <div>
                 <h1 className="text-2xl font-bold">Appointment Details</h1>
               </div>
               <div className="flex flex-col md:flex md:flex-wrap md:flex-row gap-2">
-                {patientData?.appointments?.map((appointment) => (
-                  <div key={appointment.appointmentId}>
-                    <Card className="space-y-0">
-                      <CardHeader className="space-y-0">
-                        <div>
-                          <h1 className="font-medium">
-                            {new Date(
-                              appointment?.appointmentDate
-                            ).toDateString()}
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-sm font-bold text-muted-foreground">
-                            Dr. {appointment?.doctorInfo?.firstName}{" "}
-                            {appointment?.doctorInfo?.lastName}
-                          </h1>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex gap-1 text-xl">
-                          <h1 className="font-medium">
-                            {appointment?.appointmentType}
-                          </h1>
-                        </div>
-                        <div className="flex gap-5 mt-2">
-                          {appointment?.appointmentDetails?.map((detail) => (
-                            <Card key={detail.condition}>
-                              <CardHeader>
-                                <h1 className="font-medium flex flex-col">
-                                  <span className="font-bold text-xs text-muted-foreground">
-                                    Condition
-                                  </span>
-                                  {detail?.condition}
-                                </h1>
-                                <h1 className="font-medium flex flex-col">
-                                  <span className="font-bold text-xs text-muted-foreground">
-                                    Prescription
-                                  </span>
-                                  {detail?.prescription}
-                                </h1>
-                                <span className="font-bold text-xs text-muted-foreground">
-                                  notes
-                                </span>
-                                <h1 className="font-medium flex flex-col">
-                                  {detail?.notes || "None"}
-                                </h1>
-                              </CardHeader>
-                            </Card>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
+                {patientData?.appointments?.length !== 0 ? (
+                  patientData?.appointments?.map((appointment) => (
+                    <div key={appointment.appointmentId}>
+                      <Card className="space-y-0 min-w-64">
+                        <CardHeader className="space-y-0">
+                          <div>
+                            <h1 className="font-medium">
+                              {new Date(
+                                appointment?.appointmentDate
+                              ).toDateString()}
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-sm font-bold text-muted-foreground">
+                              Dr. {appointment?.doctorInfo?.firstName}{" "}
+                              {appointment?.doctorInfo?.lastName}
+                            </h1>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex gap-5 mt-2">
+                            <Accordion
+                              type="single"
+                              collapsible
+                              className="w-full border-b-0"
+                            >
+                              <AccordionItem value="item-1">
+                                <AccordionTrigger>
+                                  <h1 className="font-medium">
+                                    {appointment?.appointmentType === "checkUp"
+                                      ? "Check Up"
+                                      : appointment?.appointmentType ===
+                                        "followUp"
+                                      ? "Follow Up"
+                                      : "Routine"}
+                                  </h1>
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                  <Table>
+                                    <TableHeader>
+                                      <TableRow>
+                                        <TableCell>Condition</TableCell>
+                                        <TableCell>Prescription</TableCell>
+                                        <TableCell>Notes</TableCell>
+                                      </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                      {appointment?.appointmentDetails?.map(
+                                        (detail) => (
+                                          <TableRow key={detail.condition}>
+                                            <TableCell>
+                                              {detail?.condition}
+                                            </TableCell>
+                                            <TableCell>
+                                              {detail?.prescription}
+                                            </TableCell>
+                                            <TableCell>
+                                              {detail?.notes || "None"}
+                                            </TableCell>
+                                          </TableRow>
+                                        )
+                                      )}
+                                    </TableBody>
+                                  </Table>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))
+                ) : (
+                  <div>
+                    <h1 className="text-muted-foreground">
+                      No appointments found.
+                    </h1>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
