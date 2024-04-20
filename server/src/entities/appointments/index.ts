@@ -10,6 +10,9 @@ export async function createAppointment(dataToInsert: any) {
 export async function getAppointmentsList() {
     const [result] = await db.query(`
     SELECT *,
+        patients.first_name AS first_name,
+        patients.last_name AS last_name,
+        patients.gender AS gender,
         doctors.first_name AS doctor_first_name,
         doctors.last_name AS doctor_last_name
     FROM appointments
