@@ -56,6 +56,7 @@ export function _formatData(rows: any[]) {
             email: rows[0].email,
             mobileNo: rows[0].mobileNo,
         },
-        appointments
+        appointments,
+        latestMedicalRecordInfo: appointments.length ? appointments?.[appointments?.length - 1]?.medicalRecordInfo : null
     };
 }
