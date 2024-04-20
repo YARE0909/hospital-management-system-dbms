@@ -21,7 +21,7 @@ export default async function registerAppointment(req: Request, res: Response): 
 
         const appointmentDetailsToInsert = appointmentDetails.map((appointmentDetail) => ({
             appointment_id: appointmentId,
-            "`condition`": appointmentDetail.condition,
+            "`condition`": appointmentDetail.condition, // This is a reserved keyword in MySQL
             prescription: appointmentDetail.prescription,
             notes: appointmentDetail.notes || null
         }))

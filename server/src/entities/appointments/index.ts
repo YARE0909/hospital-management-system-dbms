@@ -6,3 +6,20 @@ export async function createAppointment(dataToInsert: any) {
     const [result] = await db.query("SELECT id FROM appointments ORDER BY created_at DESC") as any;
     return result[0].id;
 }
+
+export async function getAppointmentsList() {
+    const [result] = await db.query(`
+    SELECT * FROM appointments
+    INNER JOIN patients ON appointments.patient_id = patients.id
+    `
+    ) as any;
+    const response = result.map((res: any) => ({
+        patientFirstName: res.first_name,
+        patientLastName: res.last_name ?? null,
+        appointmentType: res.type,
+        appointmentStatus: res.status,
+        appointmentDate: res.appointment_date,
+    }));
+
+    return response;
+}
