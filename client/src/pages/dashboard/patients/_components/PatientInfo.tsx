@@ -35,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 export default function PatientInfo({
   patientData,
@@ -168,6 +169,37 @@ export default function PatientInfo({
                           </div>
                         </CardHeader>
                         <CardContent>
+                          <div className="flex gap-3 items-center">
+                            <div>
+                              <h1 className="font-bold">
+                                {appointment?.appointmentType === "checkUp"
+                                  ? "Check Up"
+                                  : appointment?.appointmentType === "followUp"
+                                  ? "Follow Up"
+                                  : "Routine"}
+                              </h1>
+                            </div>
+                            <div>
+                              <Badge
+                                variant="secondary"
+                                className={
+                                  appointment.appointmentStatus === "pending"
+                                    ? "text-orange-500 font-bold pb-1"
+                                    : appointment.appointmentStatus ===
+                                      "cancelled"
+                                    ? "text-red-500 font-bold pb-1"
+                                    : appointment.appointmentStatus === "noShow"
+                                    ? "text-purple-500 font-bold pb-1"
+                                    : "text-green-500 font-bold pb-1"
+                                }
+                              >
+                                {appointment.appointmentStatus
+                                  .slice(0, 1)
+                                  .toUpperCase() +
+                                  appointment.appointmentStatus.slice(1)}
+                              </Badge>
+                            </div>
+                          </div>
                           <div className="flex gap-5 mt-2">
                             <Accordion
                               type="single"
@@ -177,41 +209,43 @@ export default function PatientInfo({
                               <AccordionItem value="item-1">
                                 <AccordionTrigger>
                                   <h1 className="font-medium">
-                                    {appointment?.appointmentType === "checkUp"
-                                      ? "Check Up"
-                                      : appointment?.appointmentType ===
-                                        "followUp"
-                                      ? "Follow Up"
-                                      : "Routine"}
+                                    Appointment Details
                                   </h1>
                                 </AccordionTrigger>
                                 <AccordionContent>
-                                  <Table>
-                                    <TableHeader>
-                                      <TableRow>
-                                        <TableCell>Condition</TableCell>
-                                        <TableCell>Prescription</TableCell>
-                                        <TableCell>Notes</TableCell>
-                                      </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                      {appointment?.appointmentDetails?.map(
-                                        (detail) => (
-                                          <TableRow key={detail.condition}>
-                                            <TableCell>
-                                              {detail?.condition}
-                                            </TableCell>
-                                            <TableCell>
-                                              {detail?.prescription}
-                                            </TableCell>
-                                            <TableCell>
-                                              {detail?.notes || "None"}
-                                            </TableCell>
-                                          </TableRow>
-                                        )
-                                      )}
-                                    </TableBody>
-                                  </Table>
+                                  {appointment?.appointmentDetails?.length !==
+                                  0 ? (
+                                    <Table>
+                                      <TableHeader>
+                                        <TableRow>
+                                          <TableCell>Condition</TableCell>
+                                          <TableCell>Prescription</TableCell>
+                                          <TableCell>Notes</TableCell>
+                                        </TableRow>
+                                      </TableHeader>
+                                      <TableBody>
+                                        {appointment?.appointmentDetails?.map(
+                                          (detail) => (
+                                            <TableRow key={detail.condition}>
+                                              <TableCell>
+                                                {detail?.condition}
+                                              </TableCell>
+                                              <TableCell>
+                                                {detail?.prescription}
+                                              </TableCell>
+                                              <TableCell>
+                                                {detail?.notes || "None"}
+                                              </TableCell>
+                                            </TableRow>
+                                          )
+                                        )}
+                                      </TableBody>
+                                    </Table>
+                                  ) : (
+                                    <h1 className="text-muted-foreground">
+                                      No details found.
+                                    </h1>
+                                  )}
                                 </AccordionContent>
                               </AccordionItem>
                             </Accordion>

@@ -18,7 +18,7 @@ export function PatientListTable({
   patientList: PatientListType[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [patientData, setPatientData] = useState(patientList);
+  const [patientData, setPatientData] = useState<any>(patientList);
 
   const fetchPatientData = async (patientId: string) => {
     try {
@@ -28,7 +28,6 @@ export function PatientListTable({
       setPatientData(response.data.data);
       setIsOpen(true);
     } catch (error) {
-      console.log({ error });
       toast({
         title: "Failed to fetch patient data",
         variant: "destructive",
@@ -36,7 +35,6 @@ export function PatientListTable({
     }
   };
 
-  console.log({ patientList });
   return (
     <div>
       <Table>
@@ -75,7 +73,11 @@ export function PatientListTable({
           )}
         </TableBody>
       </Table>
-      <PatientInfo isOpen={isOpen} setIsOpen={setIsOpen} patientData={patientData} />
+      <PatientInfo
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        patientData={patientData}
+      />
     </div>
   );
 }

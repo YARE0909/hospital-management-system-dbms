@@ -27,7 +27,6 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
 import { server } from "@/lib/api/server";
-import { GetServerSideProps } from "next";
 import {
   Command,
   CommandEmpty,
@@ -60,7 +59,6 @@ const RegisterAppointment = ({
   patientList: any;
   doctorList: any;
 }) => {
-  console.log({ patientList });
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -72,7 +70,6 @@ const RegisterAppointment = ({
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    console.log({ values });
     try {
       await server.post("/appointments/register", values);
       toast({
@@ -316,11 +313,3 @@ const RegisterAppointment = ({
 };
 
 export default RegisterAppointment;
-
-export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
-  return {
-    props: {
-      patientList,
-    },
-  };
-};
