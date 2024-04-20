@@ -4,7 +4,7 @@ export const RegisterAppointmentSchema = z.object({
     patientId: z.string({ required_error: "Patient ID is required", invalid_type_error: "Patient ID must be a string" }),
     doctorId: z.string({ required_error: "Doctor ID is required", invalid_type_error: "Doctor ID must be a string" }),
     appointmentDate: z.coerce.date({ required_error: "Appointment date is required", invalid_type_error: "Appointment date must be a valid date" }),
-    type: z.enum(["checkUp", "routine", "followUp"], { required_error: "Type is required", invalid_type_error: "Type must be one of 'checkUp', 'routine', 'followUp'" }),
+    appointmentType: z.enum(["checkUp", "routine", "followUp"], { required_error: "Type is required", invalid_type_error: "Type must be one of 'checkUp', 'routine', 'followUp'" }),
     // appointmentDetails: z.object({
     //     condition: z.string({ required_error: "Condition is required", invalid_type_error: "Condition must be a string" }).max(255, { message: "Condition must not exceed 255 characters" }),
     //     prescription: z.string({ required_error: "Prescription is required", invalid_type_error: "Prescription must be a string" }).max(255, { message: "Prescription must not exceed 255 characters" }),

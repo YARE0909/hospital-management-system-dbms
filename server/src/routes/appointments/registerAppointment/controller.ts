@@ -10,13 +10,13 @@ export default async function registerAppointment(req: Request, res: Response): 
     const response: ServerResponse = { hasError: true, message: "An error occured while getting patients", data: null }
 
     try {
-        const { patientId, doctorId, appointmentDate, type } = SchemaValidators.RegisterAppointmentSchema.parse(req.body);
+        const { patientId, doctorId, appointmentDate, appointmentType } = SchemaValidators.RegisterAppointmentSchema.parse(req.body);
         const appointmentInfo = {
             patientId,
             doctorId,
             appointmentDate,
             status: AppointmentStatus.PENDING,
-            type
+            type: appointmentType
         }
         await Appointments.createAppointment(appointmentInfo);
 
