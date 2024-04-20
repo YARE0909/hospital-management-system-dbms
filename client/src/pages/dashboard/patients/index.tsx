@@ -7,6 +7,7 @@ import { PatientListTable } from "./_components/patientTable";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import RegisterPatient from "./_components/registerPatient";
+import nookies from "nookies";
 
 const Index = ({ patientList }: { patientList: PatientListType[] }) => {
   const [patients, setPatients] = useState<PatientListType[]>(patientList);
@@ -34,8 +35,21 @@ const Index = ({ patientList }: { patientList: PatientListType[] }) => {
 
 export default Index;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
   const patientListResponse = await server.get("/patients/list");
+  const cookies = nookies.get(ctx);
+
+  if (!cookies.userToken) {
+    if (cookies.userToken === undefined || cookies.userToken === null) {
+      nookies.destroy(ctx, "userToken");
+    }
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

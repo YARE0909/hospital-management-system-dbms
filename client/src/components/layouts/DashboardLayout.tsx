@@ -1,30 +1,14 @@
 import Link from "next/link";
 import {
-  Bell,
   CalendarClock,
   CircleUser,
   Cross,
   Gauge,
-  Home,
-  LineChart,
   Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
   UserRound,
-  Users,
 } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,9 +17,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRouter } from "next/router";
+import { destroyCookie } from "nookies";
 
 export default function DashboardLayout({
   children,
@@ -43,6 +27,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+
+  const handleLogout = () => {
+    destroyCookie(null, "userToken", { path: "/" });
+    router.push("/login");
+  };
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -165,7 +154,9 @@ export default function DashboardLayout({
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <div onClick={handleLogout}>
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>

@@ -1,5 +1,6 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import React from "react";
+import nookies from "nookies";
 
 const Index = () => {
   return (
@@ -12,3 +13,22 @@ const Index = () => {
 };
 
 export default Index;
+
+export const getServerSideProps = async (ctx: any) => {
+  const cookies = nookies.get(ctx);
+
+  if (!cookies.userToken) {
+    if (cookies.userToken === undefined || cookies.userToken === null) {
+      nookies.destroy(ctx, "userToken");
+    }
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};
