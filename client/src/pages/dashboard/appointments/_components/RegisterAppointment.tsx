@@ -64,7 +64,7 @@ const RegisterAppointment = ({
     defaultValues: {
       patientId: "",
       doctorId: "",
-      appointmentDate: "",
+      appointmentDate: new Date(),
       appointmentType: "checkUp",
     },
   });

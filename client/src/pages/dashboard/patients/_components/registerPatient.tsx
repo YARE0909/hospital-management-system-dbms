@@ -60,7 +60,7 @@ const RegisterPatient = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
-      dateOfBirth: "",
+      dateOfBirth: new Date(),
       gender: "male",
       mobileNo: "",
     },
