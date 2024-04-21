@@ -64,7 +64,7 @@ const RegisterDiagnosis = () => {
             className="w-full lg:w-fit flex gap-2 items-center"
           >
             <CirclePlus className="h-4 w-4" />
-            Diagnosis Info
+            Diagnosis
           </Button>
         </SheetTrigger>
         <SheetContent
