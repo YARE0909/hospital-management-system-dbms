@@ -26,7 +26,7 @@ export function AppointmentListTable({
       const response = await server.post(`/appointments/info`, {
         appointmentId,
       });
-      setAppointmentData(response.data.data.appointmentInfo);
+      setAppointmentData(response.data.data);
       setIsOpen(true);
     } catch (error) {
       toast({

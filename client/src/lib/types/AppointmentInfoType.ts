@@ -21,13 +21,21 @@ interface PatientInfo {
   mobileNo: string;
 }
 
-interface AppointmentDetails {
+export interface AppointmentDetails {
   condition: string;
   prescription: string;
   notes: null | string;
+  createdAt: string;
 }
 
 export default interface AppointmentInfoType {
+  appointmentInfo: {
+    appointmentId: string;
+    appointmentDate: string;
+    appointmentCreatedAt: string;
+    appointmentStatus: "pending" | "cancelled" | "noShow" | "completed";
+    appointmentType: string;
+  };
   medicalRecordInfo: MedicalRecordInfo;
   doctorInfo: DoctorInfo;
   patientInfo: PatientInfo;

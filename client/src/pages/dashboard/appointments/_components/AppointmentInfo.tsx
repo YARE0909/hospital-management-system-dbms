@@ -18,6 +18,7 @@ import {
   CircleGauge,
   CirclePlus,
   Dna,
+  Dot,
   Phone,
   Ruler,
   UserRound,
@@ -37,7 +38,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import AppointmentInfoType from "@/lib/types/AppointmentInfoType";
+import AppointmentInfoType, {
+  AppointmentDetails,
+} from "@/lib/types/AppointmentInfoType";
 import RegisterDiagnosis from "./RegisterDiagnosis";
 
 export default function AppointmentInfo({
@@ -49,16 +52,13 @@ export default function AppointmentInfo({
   isOpen: boolean;
   setIsOpen: any;
 }) {
-  console.log({ appointmentData });
   return (
     <Drawer open={isOpen} onDrag={() => setIsOpen(false)}>
       <DrawerContent className="h-fit max-h-screen">
         <div className="px-4 w-full overflow-auto">
           <DrawerHeader>
-            <DrawerTitle>Patient Record</DrawerTitle>
-            <DrawerDescription>
-              View patient details and medical records
-            </DrawerDescription>
+            <DrawerTitle>Appointment</DrawerTitle>
+            <DrawerDescription>View appointment details</DrawerDescription>
           </DrawerHeader>
           <div className="px-4 flex flex-col lg:flex lg:flex-row justify-between gap-5 overflow-auto h-full">
             <div className="flex flex-col gap-5 w-full lg:w-1/4 border-r-0 lg:border-r">
@@ -147,83 +147,91 @@ export default function AppointmentInfo({
               </div>
             </div>
             <div className="w-full lg:w-3/4 flex flex-col gap-5">
-              <div className="w-full flex justify-between">
-                <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
+                <div>
+                  <h1 className="text-2xl font-bold">Appointment Details</h1>
+                </div>
+                <div className="flex flex-col gap-1">
                   <div>
-                    <h1 className="text-2xl font-bold">Appointment Details</h1>
+                    <div className="flex">
+                      <h1 className="font-medium text-sm text-muted-foreground">
+                        {new Date(
+                          appointmentData?.appointmentInfo?.appointmentCreatedAt
+                        ).toDateString()}
+                      </h1>
+                      <div>
+                        <Dot color="#9EA3A3" />
+                      </div>
+                      <div>
+                        <h1 className="font-medium text-sm text-muted-foreground">
+                          Dr. {appointmentData?.doctorInfo?.firstName}{" "}
+                          {appointmentData?.doctorInfo?.lastName}
+                        </h1>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <Badge
                       variant="secondary"
                       className={
-                        // appointment.appointmentStatus === "pending"
-                        //   ? "text-orange-500 font-bold pb-1"
-                        //   : appointment.appointmentStatus === "cancelled"
-                        //   ? "text-red-500 font-bold pb-1"
-                        //   : appointment.appointmentStatus === "noShow"
-                        //   ? "text-purple-500 font-bold pb-1"
-                        //   : "text-green-500 font-bold pb-1"
-                        "text-orange-500"
+                        appointmentData?.appointmentInfo?.appointmentStatus ===
+                        "pending"
+                          ? "text-orange-500 font-bold pb-1"
+                          : appointmentData?.appointmentInfo
+                              ?.appointmentStatus === "cancelled"
+                          ? "text-red-500 font-bold pb-1"
+                          : appointmentData?.appointmentInfo
+                              ?.appointmentStatus === "noShow"
+                          ? "text-purple-500 font-bold pb-1"
+                          : "text-green-500 font-bold pb-1"
                       }
                     >
-                      Pending
-                      {/* {appointment.appointmentStatus.slice(0, 1).toUpperCase() +
-                        appointment.appointmentStatus.slice(1)} */}
+                      {appointmentData?.appointmentInfo?.appointmentStatus
+                        .slice(0, 1)
+                        .toUpperCase() +
+                        appointmentData?.appointmentInfo?.appointmentStatus.slice(
+                          1
+                        )}
                     </Badge>
                   </div>
+                </div>
+              </div>
+              <div className="w-full flex flex-col lg:flex lg:flex-row gap-5 justify-between lg:items-center">
+                <div>
+                  <h1 className="font-medium">Diagnosis Information</h1>
                 </div>
                 <div>
                   <RegisterDiagnosis />
                 </div>
               </div>
-              <div className="w-full flex flex-wrap">
+              <div className="w-full flex flex-wrap gap-5">
                 {appointmentData?.appointmentDetails?.length !== 0 ? (
-                  appointmentData?.appointmentDetails?.map((appointment) => (
-                    <Accordion
-                      type="single"
-                      collapsible
-                      className="w-full max-w-56 border-b-0"
-                      key={appointment.condition}
-                    >
-                      <AccordionItem value="item-1">
-                        <AccordionTrigger>
-                          <h1 className="font-medium">25-02-24</h1>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <Card className="w-fit">
-                            <CardHeader>
-                              <div className="flex flex-col gap-2">
-                                <div>
-                                  <h1 className="text-sm font-bold text-muted-foreground">
-                                    Condition
-                                  </h1>
-                                  <h1 className="font-bold">
-                                    {appointment.condition}
-                                  </h1>
-                                </div>
-                                <div>
-                                  <h1 className="text-sm font-bold text-muted-foreground">
-                                    Prescription
-                                  </h1>
-                                  <h1 className="font-bold">
-                                    {appointment.prescription}
-                                  </h1>
-                                </div>
-                                <div>
-                                  <h1 className="text-sm font-bold text-muted-foreground">
-                                    Notes
-                                  </h1>
-                                  <h1 className="font-bold">
-                                    {appointment.notes || "None"}
-                                  </h1>
-                                </div>
-                              </div>
-                            </CardHeader>
-                          </Card>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  ))
+                  appointmentData?.appointmentDetails?.map(
+                    (appointment: AppointmentDetails) => (
+                      <Table key={appointment?.condition}>
+                        <TableHeader>
+                          <TableRow>
+                            <TableCell>Condition</TableCell>
+                            <TableCell>Prescription</TableCell>
+                            <TableCell>Notes</TableCell>
+                            <TableCell>Created At</TableCell>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>{appointment?.condition}</TableCell>
+                            <TableCell>{appointment?.prescription}</TableCell>
+                            <TableCell>
+                              {appointment.notes ? appointment.notes : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              {new Date(appointment.createdAt).toDateString()}
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    )
+                  )
                 ) : (
                   <div>
                     <h1>No appointment details found.</h1>

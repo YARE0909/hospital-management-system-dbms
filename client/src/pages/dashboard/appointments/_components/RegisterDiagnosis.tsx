@@ -1,8 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  CirclePlus,
-} from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -54,14 +52,17 @@ const RegisterDiagnosis = () => {
     //   });
     // }
 
-    console.log({ values })
+    console.log({ values });
   };
 
   return (
     <div>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" className="flex gap-2 items-center">
+          <Button
+            variant="outline"
+            className="w-full lg:w-fit flex gap-2 items-center"
+          >
             <CirclePlus className="h-4 w-4" />
             Diagnosis Info
           </Button>
