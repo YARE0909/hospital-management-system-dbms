@@ -66,6 +66,8 @@ export async function getAppointmentCount() {
 export async function getAppointmentInfo(id: string) {
     const [result] = await db.query(`
     SELECT *,
+        appointments.id AS app_id,
+        appointments.created_at AS app_created_at,
         patients.first_name AS first_name,
         patients.last_name AS last_name,
         patients.gender AS gender,
@@ -113,7 +115,14 @@ export async function getAppointmentInfo(id: string) {
         return detail.condition !== null || detail.prescription !== null || detail.notes !== null;
     });
 
-    const appointmentInfo = {
+    const responseToSend = {
+        appointmentInfo: {
+            appointmentId: result[0].app_id,
+            appointmentDate: result[0].appointment_date,
+            appointmentCreatedAt: result[0].app_created_at,
+            appointmentStatus: result[0].status,
+            appointmentType: result[0].type,
+        },
         medicalRecordInfo: response[0].medicalRecordInfo,
         doctorInfo: {
             firstName: result[0].doctor_first_name,
@@ -133,7 +142,7 @@ export async function getAppointmentInfo(id: string) {
         appointmentDetails: hasAppointmentDetails ? appointmentDetails : []
     };
 
-    return appointmentInfo;
+    return responseToSend;
 
 
 }

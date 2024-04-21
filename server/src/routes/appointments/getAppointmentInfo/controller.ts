@@ -20,7 +20,7 @@ export default async function getAppointmentInfo(req: Request, res: Response): P
 
         response.hasError = false;
         response.message = "Appointment info fetched successfully";
-        response.data = { appointmentInfo };
+        response.data = appointmentInfo;
         return response;
     } catch (err) {
         if (err instanceof ZodError) {
