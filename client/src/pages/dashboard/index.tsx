@@ -183,7 +183,8 @@ const Index = ({
                     {(
                       dashboardStatistics.genderRatio.maleCount /
                       dashboardStatistics.genderRatio.femaleCount
-                    ).toFixed(2)}
+                    ).toFixed(2)}{" "}
+                    : 1
                   </h1>
                 </div>
               </div>
