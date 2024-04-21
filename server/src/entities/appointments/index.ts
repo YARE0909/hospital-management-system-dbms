@@ -63,9 +63,22 @@ export async function getAppointmentCount() {
     return result[0].count;
 }
 
-export async function getAppointmentDetailsInfoById(id: string) {
+export async function getAppointmentInfo(id: string) {
     const [result] = await db.query(`
-    SELECT * FROM appointments
+    SELECT *,
+        patients.first_name AS first_name,
+        patients.last_name AS last_name,
+        patients.gender AS gender,
+        patients.email AS email,
+        patients.mobile_no AS mobile_no,
+        doctors.first_name AS doctor_first_name,
+        doctors.last_name AS doctor_last_name,
+        doctors.gender AS doctor_gender,
+        doctors.email AS doctor_email,
+        doctors.mobile_no AS doctor_mobile_no
+    FROM appointments
+    LEFT JOIN patients ON appointments.patient_id = patients.id
+    LEFT JOIN doctors ON appointments.doctor_id = doctors.id
     LEFT JOIN appointment_details ON appointments.id = appointment_details.appointment_id
     LEFT JOIN medical_records ON appointments.id = medical_records.appointment_id
     WHERE appointments.id = ?
@@ -88,29 +101,37 @@ export async function getAppointmentDetailsInfoById(id: string) {
         return null;
     }
 
-    // Check if there's no medical record info and no appointment details, return null
-    const hasAppointmentDetails = response.some((res: any) => res.condition !== null);
-    const hasMedicalRecordInfo = response.some((res: any) => res.medicalRecordInfo !== null);
-    if (!hasAppointmentDetails && !hasMedicalRecordInfo) {
-        return null;
-    }
+    // If there's no appointment details, set it to an empty array
+    const appointmentDetails = response.map((res: any) => ({
+        condition: res.condition,
+        prescription: res.prescription,
+        notes: res.notes
+    }));
 
-    // If there's appointment details but no medical record info, set medicalRecordInfo to null
-    if (hasAppointmentDetails && !hasMedicalRecordInfo) {
-        response.forEach((res: any) => {
-            res.medicalRecordInfo = null;
-        });
-    }
+    const hasAppointmentDetails = appointmentDetails.some((detail: any) => {
+        return detail.condition !== null || detail.prescription !== null || detail.notes !== null;
+    });
 
     const appointmentInfo = {
         medicalRecordInfo: response[0].medicalRecordInfo,
-        appointmentDetails: response.map((res: any) => ({
-            condition: res.condition,
-            prescription: res.prescription,
-            notes: res.notes
-        }))
+        doctorInfo: {
+            firstName: result[0].doctor_first_name,
+            lastName: result[0].doctor_last_name,
+            gender: result[0].doctor_gender,
+            email: result[0].doctor_email,
+            mobileNo: result[0].doctor_mobile_no
+        },
+        patientInfo: {
+            firstName: result[0].first_name,
+            lastName: result[0].last_name,
+            gender: result[0].gender,
+            email: result[0].email,
+            mobileNo: result[0].mobile_no
+        },
+        appointmentDetails: hasAppointmentDetails ? appointmentDetails : []
     };
 
     return appointmentInfo;
+
 
 }

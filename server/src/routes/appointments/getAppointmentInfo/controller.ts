@@ -5,21 +5,21 @@ import { fromZodError } from "zod-validation-error";
 import { Appointments } from "#src/entities/index.js";
 import { SchemaValidators } from "#src/frameworks/index.js";
 
-export default async function getAppointmentDetailsInfo(req: Request, res: Response): Promise<ServerResponse> {
+export default async function getAppointmentInfo(req: Request, res: Response): Promise<ServerResponse> {
     const response: ServerResponse = { hasError: true, message: "An error occured while getting patients", data: null }
 
     try {
         const { appointmentId } = SchemaValidators.GetAppointmentInfoSchema.parse(req.body);
-        const appointmentInfo = await Appointments.getAppointmentDetailsInfoById(appointmentId);
+        const appointmentInfo = await Appointments.getAppointmentInfo(appointmentId);
 
         if (!appointmentInfo) {
             response.hasError = false;
-            response.message = "Appointment details not found";
+            response.message = "Appointment info not found";
             return response;
         }
 
         response.hasError = false;
-        response.message = "Appointment details info fetched successfully";
+        response.message = "Appointment info fetched successfully";
         response.data = { appointmentInfo };
         return response;
     } catch (err) {
