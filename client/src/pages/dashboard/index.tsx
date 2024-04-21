@@ -147,12 +147,12 @@ const Index = ({
                       {
                         name: "Male",
                         value: dashboardStatistics.genderRatio.maleCount,
-                        fill: "#3B82F6",
+                        fill: "#3582F6",
                       },
                       {
                         name: "Female",
                         value: dashboardStatistics.genderRatio.femaleCount,
-                        fill: "#E11D48",
+                        fill: "#EC4899",
                       },
                     ]}
                     dataKey="value"
