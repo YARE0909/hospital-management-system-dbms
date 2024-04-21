@@ -60,3 +60,55 @@ export async function getAppointmentCount() {
     `) as any;
     return result[0].count;
 }
+
+export async function getAppointmentDetailsInfoById(id: string) {
+    const [result] = await db.query(`
+    SELECT * FROM appointments
+    LEFT JOIN appointment_details ON appointments.id = appointment_details.appointment_id
+    LEFT JOIN medical_records ON appointments.id = medical_records.appointment_id
+    WHERE appointments.id = ?
+    `, [id]) as any;
+
+    const response = result.map((res: any) => {
+        const medicalRecordInfo = (res.height && res.weight && res.blood_pressure) ?
+            { height: parseInt(res.height), weight: parseInt(res.weight), bloodPressure: res.blood_pressure } : null;
+
+        return {
+            condition: res.condition,
+            prescription: res.prescription,
+            notes: res.notes,
+            medicalRecordInfo: medicalRecordInfo
+        };
+    });
+
+    // Check if there's no data in the response, return null
+    if (response.length === 0) {
+        return null;
+    }
+
+    // Check if there's no medical record info and no appointment details, return null
+    const hasAppointmentDetails = response.some((res: any) => res.condition !== null);
+    const hasMedicalRecordInfo = response.some((res: any) => res.medicalRecordInfo !== null);
+    if (!hasAppointmentDetails && !hasMedicalRecordInfo) {
+        return null;
+    }
+
+    // If there's appointment details but no medical record info, set medicalRecordInfo to null
+    if (hasAppointmentDetails && !hasMedicalRecordInfo) {
+        response.forEach((res: any) => {
+            res.medicalRecordInfo = null;
+        });
+    }
+
+    const appointmentInfo = {
+        medicalRecordInfo: response[0].medicalRecordInfo,
+        appointmentDetails: response.map((res: any) => ({
+            condition: res.condition,
+            prescription: res.prescription,
+            notes: res.notes
+        }))
+    };
+
+    return appointmentInfo;
+
+}

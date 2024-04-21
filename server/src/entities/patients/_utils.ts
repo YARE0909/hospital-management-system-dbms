@@ -1,7 +1,7 @@
 export function _formatData(rows: any[]) {
     const appointmentsMap = new Map();
 
-    rows.forEach(row => {
+    rows.forEach((row) => {
         const { appointmentId, appointmentDate, appointmentStatus, appointmentType, condition, prescription, notes, height, weight, bloodPressure, doctorFirstName, doctorLastName, doctorGender, doctorMobileNo, doctorEmail } = row;
 
         if (appointmentId) {
@@ -32,11 +32,11 @@ export function _formatData(rows: any[]) {
                 });
             }
 
-            if (height || weight || bloodPressure) {
+            if (height && weight && bloodPressure) {
                 appointment.medicalRecordInfo = {
-                    height: parseFloat(height) || null,
-                    weight: parseFloat(weight) || null,
-                    bloodPressure: bloodPressure || null
+                    height: parseFloat(height),
+                    weight: parseFloat(weight),
+                    bloodPressure
                 };
             }
 
