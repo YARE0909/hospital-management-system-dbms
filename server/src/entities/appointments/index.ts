@@ -10,6 +10,7 @@ export async function createAppointment(dataToInsert: any) {
 export async function getAppointmentsList() {
     const [result] = await db.query(`
     SELECT *,
+        appointments.id AS app_id,
         patients.first_name AS first_name,
         patients.last_name AS last_name,
         patients.gender AS gender,
@@ -22,6 +23,7 @@ export async function getAppointmentsList() {
     `
     ) as any;
     const response = result.map((res: any) => ({
+        appointmentId: res.app_id,
         patientFirstName: res.first_name,
         patientLastName: res.last_name ?? null,
         patientGender: res.gender,
