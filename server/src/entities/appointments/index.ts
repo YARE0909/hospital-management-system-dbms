@@ -68,6 +68,7 @@ export async function getAppointmentInfo(id: string) {
     SELECT *,
         appointments.id AS app_id,
         appointments.created_at AS app_created_at,
+        appointment_details.created_at AS appointment_details_created_at,
         patients.first_name AS first_name,
         patients.last_name AS last_name,
         patients.gender AS gender,
@@ -95,6 +96,7 @@ export async function getAppointmentInfo(id: string) {
             condition: res.condition,
             prescription: res.prescription,
             notes: res.notes,
+            createdAt: res.appointment_details_created_at,
             medicalRecordInfo: medicalRecordInfo
         };
     });
@@ -108,7 +110,8 @@ export async function getAppointmentInfo(id: string) {
     const appointmentDetails = response.map((res: any) => ({
         condition: res.condition,
         prescription: res.prescription,
-        notes: res.notes
+        notes: res.notes,
+        createdAt: res.createdAt,
     }));
 
     const hasAppointmentDetails = appointmentDetails.some((detail: any) => {
