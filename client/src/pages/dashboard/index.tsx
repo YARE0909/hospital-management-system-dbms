@@ -78,7 +78,7 @@ const Index = ({
           <Card className="w-full">
             <CardHeader>
               <h1 className="font-bold text-md text-muted-foreground">
-                Total Number Of Doctor
+                Total Number Of Doctors
               </h1>
             </CardHeader>
             <CardContent>

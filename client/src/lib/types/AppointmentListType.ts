@@ -6,4 +6,5 @@ export default interface AppointmentListType {
   appointmentDate: string;
   doctorFirstName: string;
   doctorLastName: string;
+  appointmentId: string;
 }

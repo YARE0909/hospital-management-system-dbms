@@ -9,12 +9,33 @@ import {
 import { useState } from "react";
 import AppointmentListType from "@/lib/types/AppointmentListType";
 import { Badge } from "@/components/ui/badge";
+import AppointmentInfo from "./AppointmentInfo";
+import { toast } from "@/components/ui/use-toast";
+import { server } from "@/lib/api/server";
 
 export function AppointmentListTable({
   appointmentList,
 }: {
   appointmentList: AppointmentListType[];
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [appointmentData, setAppointmentData] = useState<any>(appointmentList);
+
+  const fetchAppointmentData = async (appointmentId: string) => {
+    try {
+      const response = await server.post(`/appointments/info`, {
+        appointmentId,
+      });
+      setAppointmentData(response.data.data.appointmentInfo);
+      setIsOpen(true);
+    } catch (error) {
+      toast({
+        title: "Failed to fetch appointment data",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div>
       <Table>
@@ -30,7 +51,13 @@ export function AppointmentListTable({
         <TableBody>
           {appointmentList?.length !== 0 ? (
             appointmentList?.map((appointment) => (
-              <TableRow key={appointment.appointmentDate}>
+              <TableRow
+                onClick={() => {
+                  fetchAppointmentData(appointment.appointmentId);
+                }}
+                className="cursor-pointer"
+                key={appointment.appointmentDate}
+              >
                 <TableCell className="font-medium">
                   {appointment.patientFirstName} {appointment.patientLastName}
                 </TableCell>
@@ -75,6 +102,11 @@ export function AppointmentListTable({
           )}
         </TableBody>
       </Table>
+      <AppointmentInfo
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        appointmentData={appointmentData}
+      />
     </div>
   );
 }
