@@ -175,11 +175,17 @@ export default function DashboardLayout({
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Support
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <div onClick={handleLogout}>
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  Logout
+                </DropdownMenuItem>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
