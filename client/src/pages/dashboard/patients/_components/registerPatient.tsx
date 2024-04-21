@@ -1,9 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  CalendarIcon,
-  CirclePlus,
-} from "lucide-react";
+import { CalendarIcon, CirclePlus } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -88,10 +85,10 @@ const RegisterPatient = () => {
           </Button>
         </SheetTrigger>
         <SheetContent
-          side="bottom"
+          side="right"
           className="flex flex-col justify-center items-center max-h-screen overflow-auto px-4"
         >
-          <div className="w-full md:max-w-[40rem]">
+          <div className="w-full h-full flex flex-col gap-5 md:max-w-[40rem]">
             <div>
               <h1 className="text-2xl font-bold">Register Patient</h1>
             </div>

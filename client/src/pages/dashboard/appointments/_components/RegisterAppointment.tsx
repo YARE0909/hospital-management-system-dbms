@@ -96,12 +96,12 @@ const RegisterAppointment = ({
           </Button>
         </SheetTrigger>
         <SheetContent
-          side="bottom"
+          side="right"
           className="flex flex-col justify-center items-center max-h-screen overflow-auto px-4"
         >
-          <div className="w-full md:max-w-[40rem]">
+          <div className="w-full h-full flex flex-col gap-5 md:max-w-[40rem]">
             <SheetHeader>
-              <h1 className="text-2xl font-bold">Register Appointment</h1>
+              <h1 className="text-2xl font-bold">Schedule Appointment</h1>
             </SheetHeader>
             <Form {...form}>
               <form
@@ -216,7 +216,7 @@ const RegisterAppointment = ({
                   name="appointmentType"
                   render={({ field }: any) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Type</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}

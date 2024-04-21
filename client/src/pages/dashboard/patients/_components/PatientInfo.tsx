@@ -144,9 +144,9 @@ export default function PatientInfo({
             </div>
             <div className="w-full lg:w-3/4 flex flex-col gap-5">
               <div>
-                <h1 className="text-2xl font-bold">Appointment Details</h1>
+                <h1 className="text-2xl font-bold">Appointment(s)</h1>
               </div>
-              <div className="flex flex-col md:flex md:flex-wrap md:flex-row gap-2">
+              <div className="flex flex-col gap-2">
                 {patientData?.appointments?.length !== 0 ? (
                   patientData?.appointments?.map((appointment) => (
                     <div key={appointment.appointmentId}>
@@ -207,7 +207,7 @@ export default function PatientInfo({
                               <AccordionItem value="item-1">
                                 <AccordionTrigger>
                                   <h1 className="font-medium">
-                                    Appointment Details
+                                    Diagnosis
                                   </h1>
                                 </AccordionTrigger>
                                 <AccordionContent>

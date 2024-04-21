@@ -19,6 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
+import { server } from "@/lib/api/server";
 
 const schema = z.object({
   condition: z.string().min(1).max(50),
@@ -26,7 +28,7 @@ const schema = z.object({
   notes: z.string().max(50).optional(),
 });
 
-const RegisterDiagnosis = () => {
+const RegisterDiagnosis = ({ appointmentId }: { appointmentId: string }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -37,22 +39,29 @@ const RegisterDiagnosis = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    // try {
-    //   await server.post("/patients/register", values);
-    //   toast({
-    //     title: "Patient registered successfully!",
-    //     description: "The patient has been added to the database.",
-    //   });
-    //   form.reset();
-    // } catch (error) {
-    //   toast({
-    //     title: "Something went wrong!",
-    //     description: "Please try again later.",
-    //     variant: "destructive",
-    //   });
-    // }
-    // TODO: Implement the register diagnosis functionality
-    console.log({ values });
+    try {
+      await server.post("/appointmentDetails/add", {
+        appointmentId,
+        appointmentDetails: [
+          {
+            condition: values.condition,
+            prescription: values.prescription,
+            notes: values.notes,
+          },
+        ],
+      });
+      toast({
+        title: "Diagnosis added successfully!",
+        description: "The diagnosis has been added successfully.",
+      });
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Something went wrong!",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -190,23 +190,27 @@ export default function AppointmentInfo({
                   <h1 className="font-medium">Diagnosis Information</h1>
                 </div>
                 <div>
-                  <RegisterDiagnosis />
+                  <RegisterDiagnosis
+                    appointmentId={
+                      appointmentData?.appointmentInfo?.appointmentId
+                    }
+                  />
                 </div>
               </div>
               <div className="w-full flex flex-wrap gap-5">
                 {appointmentData?.appointmentDetails?.length !== 0 ? (
-                  appointmentData?.appointmentDetails?.map(
-                    (appointment: AppointmentDetails) => (
-                      <Table key={appointment?.condition}>
-                        <TableHeader>
-                          <TableRow>
-                            <TableCell>Condition</TableCell>
-                            <TableCell>Prescription</TableCell>
-                            <TableCell>Notes</TableCell>
-                            <TableCell>Created At</TableCell>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableCell>Condition</TableCell>
+                        <TableCell>Prescription</TableCell>
+                        <TableCell>Notes</TableCell>
+                        <TableCell>Created At</TableCell>
+                      </TableRow>
+                    </TableHeader>
+                    {appointmentData?.appointmentDetails?.map(
+                      (appointment: AppointmentDetails) => (
+                        <TableBody key={appointment?.condition}>
                           <TableRow>
                             <TableCell>{appointment?.condition}</TableCell>
                             <TableCell>{appointment?.prescription}</TableCell>
@@ -218,12 +222,14 @@ export default function AppointmentInfo({
                             </TableCell>
                           </TableRow>
                         </TableBody>
-                      </Table>
-                    )
-                  )
+                      )
+                    )}
+                  </Table>
                 ) : (
                   <div>
-                    <h1>No appointment details found.</h1>
+                    <h1 className="text-muted-foreground">
+                      No diagnoses were found.
+                    </h1>
                   </div>
                 )}
               </div>
