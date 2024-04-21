@@ -71,6 +71,7 @@ export async function getAppointmentInfo(id: string) {
         patients.gender AS gender,
         patients.email AS email,
         patients.mobile_no AS mobile_no,
+        patients.date_of_birth AS date_of_birth,
         doctors.first_name AS doctor_first_name,
         doctors.last_name AS doctor_last_name,
         doctors.gender AS doctor_gender,
@@ -125,6 +126,7 @@ export async function getAppointmentInfo(id: string) {
             firstName: result[0].first_name,
             lastName: result[0].last_name,
             gender: result[0].gender,
+            dateOfBirth: result[0].date_of_birth,
             email: result[0].email,
             mobileNo: result[0].mobile_no
         },
