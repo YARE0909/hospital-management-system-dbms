@@ -11,6 +11,7 @@ import PatientInfo from "./PatientInfo";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { server } from "@/lib/api/server";
+import { Badge } from "@/components/ui/badge";
 
 export function PatientListTable({
   patientList,
@@ -60,7 +61,18 @@ export function PatientListTable({
                   {patient.firstName} {patient.lastName}
                 </TableCell>
                 <TableCell>{patient.email}</TableCell>
-                <TableCell>{patient.gender}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant="secondary"
+                    className={
+                      patient.gender === "Male"
+                        ? "text-blue-500 font-bold pb-1"
+                        : "text-pink-500 font-bold pb-1"
+                    }
+                  >
+                    {patient.gender}
+                  </Badge>
+                </TableCell>
                 <TableCell>{patient.mobileNo}</TableCell>
               </TableRow>
             ))
