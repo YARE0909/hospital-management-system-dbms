@@ -58,7 +58,7 @@ export function AppointmentListTable({
                 className="cursor-pointer"
                 key={appointment.appointmentDate}
               >
-                <TableCell className="font-medium">
+                <TableCell className="font-bold">
                   {appointment.patientFirstName} {appointment.patientLastName}
                 </TableCell>
                 <TableCell>

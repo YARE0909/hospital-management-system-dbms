@@ -57,7 +57,7 @@ export function PatientListTable({
                 className="cursor-pointer"
                 key={patient.id}
               >
-                <TableCell className="font-medium">
+                <TableCell className="font-bold">
                   {patient.firstName} {patient.lastName}
                 </TableCell>
                 <TableCell>{patient.email}</TableCell>
