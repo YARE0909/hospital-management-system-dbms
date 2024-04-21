@@ -8,15 +8,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { toast } from "@/components/ui/use-toast";
-import { server } from "@/lib/api/server";
-import { PatientData } from "@/lib/types/PatientInfoTypes";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   AtSign,
   Cake,
   CircleGauge,
-  CirclePlus,
   Dna,
   Dot,
   Phone,
@@ -24,12 +19,6 @@ import {
   UserRound,
   Weight,
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import {
   Table,
   TableBody,

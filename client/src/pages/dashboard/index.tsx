@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import {
   Area,
-  CartesianGrid,
   Pie,
   ResponsiveContainer,
   Tooltip,

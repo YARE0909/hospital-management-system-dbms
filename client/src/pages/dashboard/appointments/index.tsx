@@ -40,14 +40,14 @@ export const getServerSideProps = async (ctx: any) => {
   const doctorListResponse = await server.get("/doctors/list");
   const cookies = nookies.get(ctx);
 
-  const patientList = patientListResponse.data.data.patients.map((patient) => {
+  const patientList = patientListResponse.data.data.patients.map((patient: { firstName: any; lastName: any; id: any; }) => {
     return {
       label: `${patient.firstName} ${patient.lastName}`,
       value: patient.id,
     };
   });
 
-  const doctorList = doctorListResponse.data.data.doctors.map((doctor) => {
+  const doctorList = doctorListResponse.data.data.doctors.map((doctor: { firstName: any; lastName: any; id: any; }) => {
     return {
       label: `${doctor.firstName} ${doctor.lastName}`,
       value: doctor.id,

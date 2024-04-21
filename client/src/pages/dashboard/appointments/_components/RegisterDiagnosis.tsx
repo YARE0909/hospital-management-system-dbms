@@ -51,7 +51,7 @@ const RegisterDiagnosis = () => {
     //     variant: "destructive",
     //   });
     // }
-
+    // TODO: Implement the register diagnosis functionality
     console.log({ values });
   };
 

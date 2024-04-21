@@ -8,8 +8,6 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { toast } from "@/components/ui/use-toast";
-import { server } from "@/lib/api/server";
 import { PatientData } from "@/lib/types/PatientInfoTypes";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
