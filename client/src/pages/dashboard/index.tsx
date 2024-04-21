@@ -234,7 +234,11 @@ const Index = ({
           </CardHeader>
           <CardContent>
             <div className="w-full h-full flex flex-col gap-5 lg:gap-0">
-              <AppointmentListTable appointmentList={appointmentList} />
+              <AppointmentListTable
+                appointmentList={appointmentList.filter(
+                  (appointment) => appointment.appointmentStatus === "pending"
+                )}
+              />
             </div>
           </CardContent>
         </Card>
