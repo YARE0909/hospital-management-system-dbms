@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +23,10 @@ import { server } from "@/lib/api/server";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
+import Link from "next/link";
+import { Activity } from "lucide-react";
+import { GetServerSideProps } from "next";
+import nookies from "nookies";
 
 const schema = z.object({
   email: z.string().email(),
@@ -63,7 +66,13 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full min-h-screen h-full flex items-center justify-center">
+    <div className="w-full min-h-screen h-full flex flex-col gap-2 items-center justify-center">
+      <div className="flex h-14 items-center px-4 lg:h-[60px] lg:px-6">
+        <Link href="/" className="flex items-center gap-2 font-semibold">
+          <Activity className="h-7 w-7" />
+          <span className="text-3xl">MediCare</span>
+        </Link>
+      </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -122,3 +131,20 @@ export default function LoginForm() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookies = nookies.get(context);
+
+  if (cookies.userToken) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
