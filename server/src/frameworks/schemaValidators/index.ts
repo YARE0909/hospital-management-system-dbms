@@ -4,3 +4,5 @@ export * from "./registerAppointment.js"
 export * from "./getPatientInfo.js"
 export * from "./getAppointmentInfo.js";
 export * from "./addAppointmentDetails.js";
+export * from "./getDoctorInfo.js";
+export * from "./registerDoctor.js";

@@ -73,6 +73,9 @@ export async function getPatientById(id: string) {
         WHERE patients.id = ?`
         , [id]) as any;
 
+    if (rows.length === 0) {
+        return null;
+    }
     return _formatData(rows);
 }
 

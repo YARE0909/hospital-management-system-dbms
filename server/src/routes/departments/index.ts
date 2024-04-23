@@ -1,0 +1,1 @@
+export { default as GetDepartmentsRouter } from "./getDepartments/router.js";
