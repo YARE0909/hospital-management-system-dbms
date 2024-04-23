@@ -67,6 +67,7 @@ const RegisterAppointment = ({
       appointmentDate: new Date(),
       appointmentType: "checkUp",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -200,9 +201,6 @@ const RegisterAppointment = ({
                             mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
-                            disabled={(date: Date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
                             initialFocus
                           />
                         </PopoverContent>
@@ -298,8 +296,12 @@ const RegisterAppointment = ({
                     </FormItem>
                   )}
                 />
-                <SheetClose>
-                  <Button className="w-full" type="submit">
+                <SheetClose asChild>
+                  <Button
+                    disabled={!form.formState.isValid}
+                    className="w-full"
+                    type="submit"
+                  >
                     Submit
                   </Button>
                 </SheetClose>

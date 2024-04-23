@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Activity,
+  BriefcaseMedical,
   CalendarClock,
   CircleUser,
   Gauge,
@@ -86,6 +87,17 @@ export default function DashboardLayout({
                 <CalendarClock className="h-4 w-4" />
                 Appointments
               </Link>
+              <Link
+                href="/dashboard/doctors"
+                className={`${
+                  router.pathname === "/dashboard/doctors"
+                    ? "flex items-center gap-3 rounded-lg px-3 py-2 bg-muted text-muted-foreground transition-all hover:text-primary"
+                    : "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                }`}
+              >
+                <BriefcaseMedical className="h-4 w-4" />
+                Doctors
+              </Link>
             </nav>
           </div>
         </div>
@@ -115,24 +127,47 @@ export default function DashboardLayout({
                 <nav className="grid gap-2 text-lg font-medium">
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    className={`${
+                      router.pathname === "/dashboard"
+                        ? "flex items-center gap-3 rounded-lg px-3 py-2 bg-muted text-muted-foreground transition-all hover:text-primary"
+                        : "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    }`}
                   >
                     <Gauge className="h-4 w-4" />
                     Dashboard
                   </Link>
                   <Link
                     href="/dashboard/patients"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    className={`${
+                      router.pathname === "/dashboard/patients"
+                        ? "flex items-center gap-3 rounded-lg px-3 py-2 bg-muted text-muted-foreground transition-all hover:text-primary"
+                        : "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    }`}
                   >
                     <UserRound className="h-4 w-4" />
                     Patients
                   </Link>
                   <Link
                     href="/dashboard/appointments"
-                    className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                    className={`${
+                      router.pathname === "/dashboard/appointments"
+                        ? "flex items-center gap-3 rounded-lg px-3 py-2 bg-muted text-muted-foreground transition-all hover:text-primary"
+                        : "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    }`}
                   >
                     <CalendarClock className="h-4 w-4" />
                     Appointments
+                  </Link>
+                  <Link
+                    href="/dashboard/doctors"
+                    className={`${
+                      router.pathname === "/dashboard/doctors"
+                        ? "flex items-center gap-3 rounded-lg px-3 py-2 bg-muted text-muted-foreground transition-all hover:text-primary"
+                        : "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    }`}
+                  >
+                    <BriefcaseMedical className="h-4 w-4" />
+                    Doctors
                   </Link>
                 </nav>
               </SheetContent>

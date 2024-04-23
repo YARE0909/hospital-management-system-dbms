@@ -36,6 +36,7 @@ const RegisterDiagnosis = ({ appointmentId }: { appointmentId: string }) => {
       prescription: "",
       notes: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -129,7 +130,11 @@ const RegisterDiagnosis = ({ appointmentId }: { appointmentId: string }) => {
                   )}
                 />
                 <SheetClose asChild>
-                  <Button className="w-full" type="submit">
+                  <Button
+                    disabled={!form.formState.isValid}
+                    className="w-full"
+                    type="submit"
+                  >
                     Submit
                   </Button>
                 </SheetClose>

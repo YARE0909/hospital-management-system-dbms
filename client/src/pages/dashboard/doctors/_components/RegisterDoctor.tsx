@@ -44,6 +44,7 @@ const schema = z.object({
   gender: z.enum(["male", "female"]),
   mobileNo: z.string().regex(/^\d{10}$/),
   email: z.string().email(),
+  specialization: z.enum(["Heart Surgeon", "Dentist", "Orthopedic Surgeon"]),
 });
 
 const RegisterPatient = () => {
@@ -56,8 +57,9 @@ const RegisterPatient = () => {
       gender: "male",
       mobileNo: "",
       email: "",
+      specialization: "Heart Surgeon",
     },
-    mode: "onChange",
+    mode: "onChange"
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -83,7 +85,7 @@ const RegisterPatient = () => {
         <SheetTrigger asChild>
           <Button variant="ghost" className="flex gap-2 items-center">
             <CirclePlus className="h-4 w-4" />
-            Patient
+            Doctor
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -92,7 +94,7 @@ const RegisterPatient = () => {
         >
           <div className="w-full h-full flex flex-col gap-5 md:max-w-[40rem]">
             <div>
-              <h1 className="text-2xl font-bold">Register Patient</h1>
+              <h1 className="text-2xl font-bold">Register Doctor</h1>
             </div>
             <Form {...form}>
               <form
@@ -218,6 +220,35 @@ const RegisterPatient = () => {
                         <SelectContent>
                           <SelectItem value="male">Male</SelectItem>
                           <SelectItem value="female">Female</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="specialization"
+                  render={({ field }: any) => (
+                    <FormItem>
+                      <FormLabel>Specialization</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select specialization" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Heart Surgeon">
+                            Heart Surgeon
+                          </SelectItem>
+                          <SelectItem value="Dentist">Dentist</SelectItem>
+                          <SelectItem value="Orthopedic Surgeon">
+                            Orthopedic Surgeon
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
