@@ -19,14 +19,14 @@ export function DoctorListTable({
   doctorList: DoctorListType[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [patientData, setPatientData] = useState<any>(doctorList);
+  const [doctorData, setDoctorData] = useState<any>(doctorList);
 
-  const fetchPatientData = async (patientId: string) => {
+  const fetchDoctorData = async (doctorId: string) => {
     try {
-      const response = await server.post(`/patients/info`, {
-        patientId: "34e5a905-fee2-11ee-9e8b-644ed71ecc5d",
+      const response = await server.post(`/doctors/info`, {
+        doctorId,
       });
-      setPatientData(response.data.data);
+      setDoctorData(response.data.data);
       setIsOpen(true);
     } catch (error) {
       toast({
@@ -53,7 +53,7 @@ export function DoctorListTable({
             doctorList?.map((doctor) => (
               <TableRow
                 onClick={() => {
-                  fetchPatientData(doctor.id);
+                  fetchDoctorData(doctor.id);
                 }}
                 className="cursor-pointer"
                 key={doctor.id}
@@ -94,7 +94,7 @@ export function DoctorListTable({
       <DoctorInfo
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        doctorData={patientData}
+        doctorData={doctorData}
       />
     </div>
   );

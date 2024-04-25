@@ -8,23 +8,17 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { PatientData } from "@/lib/types/PatientInfoTypes";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import {
-  AtSign,
-  Cake,
-  Dna,
-  Phone,
-  UserRound,
-} from "lucide-react";
+import { AtSign, Cake, Dna, Phone, Syringe, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import DoctorInfoType from "@/lib/types/DoctorInfoType";
 
 export default function DoctorInfo({
   doctorData,
   isOpen,
   setIsOpen,
 }: {
-  doctorData: PatientData;
+  doctorData: DoctorInfoType;
   isOpen: boolean;
   setIsOpen: any;
 }) {
@@ -47,8 +41,8 @@ export default function DoctorInfo({
                     <UserRound color="#A3A3A3" className="w-4 h-4" />
                     <h1>
                       Dr.
-                      {doctorData?.patientInfo?.firstName}{" "}
-                      {doctorData?.patientInfo?.lastName}
+                      {doctorData?.doctorInfo?.firstName}{" "}
+                      {doctorData?.doctorInfo?.lastName}
                     </h1>
                   </div>
                   <div>
@@ -56,7 +50,7 @@ export default function DoctorInfo({
                       <Cake color="#A3A3A3" className="w-4 h-4" />
                       <h1>
                         {new Date(
-                          doctorData?.patientInfo?.dateOfBirth
+                          doctorData?.doctorInfo?.dateOfBirth
                         ).toDateString()}
                       </h1>
                     </div>
@@ -64,21 +58,25 @@ export default function DoctorInfo({
                   <div>
                     <div className="flex items-center gap-2">
                       <AtSign color="#A3A3A3" className="w-4 h-4" />
-                      <h1>{doctorData?.patientInfo?.email}</h1>
+                      <h1>{doctorData?.doctorInfo?.email}</h1>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Dna color="#A3A3A3" className="w-4 h-4" />
                     <h1>
-                      {doctorData?.patientInfo?.gender
+                      {doctorData?.doctorInfo?.gender
                         .split("")[0]
                         .toUpperCase() +
-                        doctorData?.patientInfo?.gender.slice(1)}
+                        doctorData?.doctorInfo?.gender.slice(1)}
                     </h1>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone color="#A3A3A3" className="w-4 h-4" />
-                    <h1>{doctorData?.patientInfo?.mobileNo}</h1>
+                    <h1>{doctorData?.doctorInfo?.mobileNo}</h1>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Syringe color="#A3A3A3" className="w-4 h-4" />
+                    <h1>{doctorData?.doctorInfo?.specialization}</h1>
                   </div>
                 </div>
               </div>
@@ -90,7 +88,7 @@ export default function DoctorInfo({
               <div className="flex flex-col gap-2">
                 {doctorData?.appointments?.length !== 0 ? (
                   doctorData?.appointments?.map((appointment) => (
-                    <div key={appointment.appointmentId}>
+                    <div key={appointment.appointmentCreatedAt}>
                       <Card className="space-y-0 min-w-64">
                         <CardHeader className="w-full space-y-0">
                           <div className="w-full flex justify-between">
@@ -104,8 +102,8 @@ export default function DoctorInfo({
                               </div>
                               <div>
                                 <h1 className="text-sm font-bold text-muted-foreground">
-                                  {appointment?.doctorInfo?.firstName}{" "}
-                                  {appointment?.doctorInfo?.lastName}
+                                  {appointment?.patientFirstName}{" "}
+                                  {appointment?.patientLastName}
                                 </h1>
                               </div>
                             </div>

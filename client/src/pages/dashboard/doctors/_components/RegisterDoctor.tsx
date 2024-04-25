@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, CirclePlus } from "lucide-react";
+import { CalendarIcon, CheckIcon, CirclePlus } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -36,6 +36,14 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { server } from "@/lib/api/server";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 
 const schema = z.object({
   firstName: z.string().min(1).max(50),
@@ -44,10 +52,18 @@ const schema = z.object({
   gender: z.enum(["male", "female"]),
   mobileNo: z.string().regex(/^\d{10}$/),
   email: z.string().email(),
-  specialization: z.enum(["Heart Surgeon", "Dentist", "Orthopedic Surgeon"]),
+  departmentId: z.string().min(1).max(50),
+  specialization: z.string().min(1).max(50),
 });
 
-const RegisterPatient = () => {
+const RegisterDoctor = ({
+  departmentList,
+}: {
+  departmentList: {
+    label: string;
+    value: string;
+  }[];
+}) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -57,14 +73,17 @@ const RegisterPatient = () => {
       gender: "male",
       mobileNo: "",
       email: "",
-      specialization: "Heart Surgeon",
+      departmentId: "",
+      specialization: "",
     },
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
+    console.log({ values });
+    console.log("Doctor registered successfully!");
     try {
-      await server.post("/patients/register", values);
+      await server.post("/doctors/register", values);
       toast({
         title: "Patient registered successfully!",
         description: "The patient has been added to the database.",
@@ -231,26 +250,75 @@ const RegisterPatient = () => {
                   name="specialization"
                   render={({ field }: any) => (
                     <FormItem>
-                      <FormLabel>Specialization</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select specialization" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Heart Surgeon">
-                            Heart Surgeon
-                          </SelectItem>
-                          <SelectItem value="Dentist">Dentist</SelectItem>
-                          <SelectItem value="Orthopedic Surgeon">
-                            Orthopedic Surgeon
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormLabel>Last name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Cardiologist, ...." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="departmentId"
+                  render={({ field }: any) => (
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>Department</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? departmentList.find(
+                                    (doctor: any) =>
+                                      doctor.value === field.value
+                                  )?.label
+                                : "Select department"}
+                              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
+                          <Command>
+                            <CommandInput
+                              placeholder="Search deapartments..."
+                              className="h-9"
+                            />
+                            <CommandEmpty>No department found.</CommandEmpty>
+                            <CommandGroup>
+                              {departmentList?.map((department: any) => (
+                                <CommandItem
+                                  value={department.label}
+                                  key={department.value}
+                                  onSelect={() => {
+                                    form.setValue(
+                                      "departmentId",
+                                      department.value
+                                    );
+                                  }}
+                                >
+                                  {department.label}
+                                  <CheckIcon
+                                    className={cn(
+                                      "ml-auto h-4 w-4",
+                                      department.value === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -273,4 +341,4 @@ const RegisterPatient = () => {
   );
 };
 
-export default RegisterPatient;
+export default RegisterDoctor;
