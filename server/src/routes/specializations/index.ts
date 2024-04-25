@@ -1,0 +1,1 @@
+export { default as GetSpecializationsRouter } from "./getSpecializations/router.js";

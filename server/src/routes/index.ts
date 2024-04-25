@@ -5,6 +5,7 @@ import { GetDoctorsListRouter, GetDoctorInfoRouter, RegisterDoctorRouter } from 
 import { LoginRouter } from "./auth/index.js";
 import { GetStatisticsRouter } from "./statistics/index.js";
 import { GetDepartmentsRouter } from "./departments/index.js";
+import { GetSpecializationsRouter } from "./specializations/index.js";
 
 export default () => {
     const app = Router();
@@ -22,7 +23,7 @@ export default () => {
     // Login Route
     app.use("/login", LoginRouter);
 
-    // Appointment Route
+    // Appointment Routes
     app.use("/appointments/register", RegisterAppointmentRouter);
     app.use("/appointments/list", GetAppointmentListRouter);
     app.use("/appointments/info", GetAppointmentInfoRouter);
@@ -33,6 +34,9 @@ export default () => {
 
     // Departments Route
     app.use("/departments", GetDepartmentsRouter);
+
+    // Specializations Route
+    app.use("/specializations", GetSpecializationsRouter);
 
     return app;
 };

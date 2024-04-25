@@ -48,7 +48,7 @@ export async function getDoctorById(id: string) {
             doctors.email AS email,
             doctors.mobile_no AS mobile_no,
             doctors.gender AS gender,
-            doctors.specialization AS specialization,
+            departments.name AS department_name,
             appointments.id AS appointment_id,
             appointments.appointment_date AS appointment_date,
             appointments.status AS appointment_status,
@@ -60,7 +60,8 @@ export async function getDoctorById(id: string) {
         FROM doctors
         LEFT JOIN appointments ON doctors.id = appointments.doctor_id
         LEFT JOIN patients ON appointments.patient_id = patients.id
-        LEFT JOIN departments ON doctors.department_id = departments.id
+        LEFT JOIN specializations ON doctors.specialization_id = specializations.id
+        LEFT JOIN departments ON specializations.department_id = departments.id
         WHERE doctors.id = ?
         ORDER BY appointments.appointment_date ASC
     `, [id]) as any;
@@ -97,6 +98,6 @@ export async function getDoctorById(id: string) {
 }
 
 export async function createDoctor(data: any) {
-    const { firstName, lastName, dateOfBirth, email, mobileNo, gender, password, departmentId, specialization } = data;
-    await db.query("INSERT INTO doctors VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())", [firstName, lastName, dateOfBirth, gender, mobileNo, email, password, departmentId, specialization]);
+    const { firstName, lastName, dateOfBirth, email, mobileNo, gender, password, specializationId } = data;
+    await db.query("INSERT INTO doctors VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())", [firstName, lastName, dateOfBirth, gender, mobileNo, email, password, specializationId]);
 }

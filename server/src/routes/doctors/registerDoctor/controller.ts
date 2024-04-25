@@ -10,7 +10,7 @@ export default async function registerDoctor(req: Request, res: Response): Promi
     const response: ServerResponse = { hasError: true, message: "An error occured while registering doctor", data: null }
 
     try {
-        const { firstName, lastName, dateOfBirth, gender, email, mobileNo, specialization, departmentId } = SchemaValidators.RegisterDoctorSchema.parse(req.body);
+        const { firstName, lastName, dateOfBirth, gender, email, mobileNo, specializationId } = SchemaValidators.RegisterDoctorSchema.parse(req.body);
         const dataToSave = {
             firstName,
             lastName,
@@ -19,8 +19,7 @@ export default async function registerDoctor(req: Request, res: Response): Promi
             mobileNo,
             gender,
             password: Utils.randomString(8),
-            departmentId,
-            specialization
+            specializationId,
         }
 
         await Doctors.createDoctor(dataToSave);
