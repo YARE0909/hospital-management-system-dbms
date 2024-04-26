@@ -52,14 +52,13 @@ const schema = z.object({
   gender: z.enum(["male", "female"]),
   mobileNo: z.string().regex(/^\d{10}$/),
   email: z.string().email(),
-  departmentId: z.string().min(1).max(50),
-  specialization: z.string().min(1).max(50),
+  specializationId: z.string().min(1).max(50),
 });
 
 const RegisterDoctor = ({
-  departmentList,
+  specializationList,
 }: {
-  departmentList: {
+  specializationList: {
     label: string;
     value: string;
   }[];
@@ -73,20 +72,17 @@ const RegisterDoctor = ({
       gender: "male",
       mobileNo: "",
       email: "",
-      departmentId: "",
-      specialization: "",
+      specializationId: "",
     },
     mode: "onChange",
   });
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    console.log({ values });
-    console.log("Doctor registered successfully!");
     try {
       await server.post("/doctors/register", values);
       toast({
-        title: "Patient registered successfully!",
-        description: "The patient has been added to the database.",
+        title: "Doctor registered successfully!",
+        description: "The doctor has been added to the database.",
       });
       form.reset();
     } catch (error) {
@@ -247,23 +243,10 @@ const RegisterDoctor = ({
                 />
                 <FormField
                   control={form.control}
-                  name="specialization"
-                  render={({ field }: any) => (
-                    <FormItem>
-                      <FormLabel>Last name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Cardiologist, ...." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="departmentId"
+                  name="specializationId"
                   render={({ field }: any) => (
                     <FormItem className="flex flex-col w-full">
-                      <FormLabel>Department</FormLabel>
+                      <FormLabel>Specialization</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -276,11 +259,11 @@ const RegisterDoctor = ({
                               )}
                             >
                               {field.value
-                                ? departmentList.find(
-                                    (doctor: any) =>
-                                      doctor.value === field.value
+                                ? specializationList.find(
+                                    (specialization: any) =>
+                                      specialization.value === field.value
                                   )?.label
-                                : "Select department"}
+                                : "Select specialization"}
                               <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </FormControl>
@@ -288,27 +271,29 @@ const RegisterDoctor = ({
                         <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0">
                           <Command>
                             <CommandInput
-                              placeholder="Search deapartments..."
+                              placeholder="Search specialization..."
                               className="h-9"
                             />
-                            <CommandEmpty>No department found.</CommandEmpty>
+                            <CommandEmpty>
+                              No specialization found.
+                            </CommandEmpty>
                             <CommandGroup>
-                              {departmentList?.map((department: any) => (
+                              {specializationList?.map((specialization: any) => (
                                 <CommandItem
-                                  value={department.label}
-                                  key={department.value}
+                                  value={specialization.label}
+                                  key={specialization.value}
                                   onSelect={() => {
                                     form.setValue(
-                                      "departmentId",
-                                      department.value
+                                      "specializationId",
+                                      specialization.value
                                     );
                                   }}
                                 >
-                                  {department.label}
+                                  {specialization.label}
                                   <CheckIcon
                                     className={cn(
                                       "ml-auto h-4 w-4",
-                                      department.value === field.value
+                                      specialization.value === field.value
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}

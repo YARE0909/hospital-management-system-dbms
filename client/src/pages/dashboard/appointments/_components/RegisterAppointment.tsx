@@ -59,7 +59,6 @@ const RegisterAppointment = ({
   patientList: any;
   doctorList: any;
 }) => {
-  console.log(patientList);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {

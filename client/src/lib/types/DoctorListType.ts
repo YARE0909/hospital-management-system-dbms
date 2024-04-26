@@ -7,4 +7,5 @@ export default interface DoctorListType {
   mobileNo: string;
   email: string;
   specialization: string;
+  departmentName: string;
 }

@@ -9,7 +9,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { AtSign, Cake, Dna, Phone, Syringe, UserRound } from "lucide-react";
+import { AtSign, Building, Cake, Dna, Phone, Syringe, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import DoctorInfoType from "@/lib/types/DoctorInfoType";
 
@@ -47,28 +47,9 @@ export default function DoctorInfo({
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <Cake color="#A3A3A3" className="w-4 h-4" />
-                      <h1>
-                        {new Date(
-                          doctorData?.doctorInfo?.dateOfBirth
-                        ).toDateString()}
-                      </h1>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
                       <AtSign color="#A3A3A3" className="w-4 h-4" />
                       <h1>{doctorData?.doctorInfo?.email}</h1>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Dna color="#A3A3A3" className="w-4 h-4" />
-                    <h1>
-                      {doctorData?.doctorInfo?.gender
-                        .split("")[0]
-                        .toUpperCase() +
-                        doctorData?.doctorInfo?.gender.slice(1)}
-                    </h1>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone color="#A3A3A3" className="w-4 h-4" />
@@ -77,6 +58,10 @@ export default function DoctorInfo({
                   <div className="flex items-center gap-2">
                     <Syringe color="#A3A3A3" className="w-4 h-4" />
                     <h1>{doctorData?.doctorInfo?.specialization}</h1>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Building color="#A3A3A3" className="w-4 h-4" />
+                    <h1>{doctorData?.doctorInfo?.departmentName}</h1>
                   </div>
                 </div>
               </div>

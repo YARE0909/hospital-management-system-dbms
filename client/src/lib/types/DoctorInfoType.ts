@@ -6,6 +6,7 @@ interface DoctorInfo {
   mobileNo: string;
   gender: string;
   specialization: string;
+  departmentName: string;
 }
 
 interface Appointment {

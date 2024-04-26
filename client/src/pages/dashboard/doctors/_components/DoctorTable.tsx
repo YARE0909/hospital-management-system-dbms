@@ -46,6 +46,7 @@ export function DoctorListTable({
             <TableHead>Gender</TableHead>
             <TableHead>Mobile Number</TableHead>
             <TableHead>Specialization</TableHead>
+            <TableHead>Department</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -79,6 +80,10 @@ export function DoctorListTable({
                 <TableCell>
                   {doctor.specialization.slice(0, 1).toUpperCase() +
                     doctor.specialization.slice(1)}
+                </TableCell>
+                <TableCell>
+                  {doctor.departmentName.slice(0, 1).toUpperCase() +
+                    doctor.departmentName.slice(1)}
                 </TableCell>
               </TableRow>
             ))

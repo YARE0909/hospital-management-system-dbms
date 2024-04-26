@@ -10,9 +10,14 @@ import RegisterDoctor from "./_components/RegisterDoctor";
 const Index = ({
   doctorList,
   departmentList,
+  specializationList,
 }: {
   doctorList: DoctorListType[];
   departmentList: {
+    label: string;
+    value: string;
+  }[];
+  specializationList: {
     label: string;
     value: string;
   }[];
@@ -31,7 +36,7 @@ const Index = ({
             <h1 className="font-bold text-2xl">Doctor List</h1>
           </div>
           <div>
-            <RegisterDoctor departmentList={departmentList} />
+            <RegisterDoctor specializationList={specializationList} />
           </div>
         </div>
         <DoctorListTable doctorList={patients} />
@@ -44,17 +49,21 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
   const doctorListResponse = await server.get("/doctors/list");
-  const departmentListResponse = await server.get("/departments");
+  const specializationListResponse = await server.get("/specializations");
   const cookies = nookies.get(ctx);
 
-  const departmentList = departmentListResponse.data.data.departments.map(
-    (department: { departmentName: string; departmentId: string }) => {
-      return {
-        label: department.departmentName,
-        value: department.departmentId,
-      };
-    }
-  );
+  const specializationList =
+    specializationListResponse.data.data.specializations.map(
+      (specialization: {
+        specializationName: string;
+        specializationId: string;
+      }) => {
+        return {
+          label: specialization.specializationName,
+          value: specialization.specializationId,
+        };
+      }
+    );
 
   if (!cookies.userToken) {
     if (cookies.userToken === undefined || cookies.userToken === null) {
@@ -71,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
   return {
     props: {
       doctorList: doctorListResponse.data.data.doctors,
-      departmentList,
+      specializationList,
     },
   };
 };
