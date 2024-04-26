@@ -66,7 +66,8 @@ export async function getDoctorById(id: string) {
             appointments.created_at AS appointment_created_at,
             patients.first_name AS patient_first_name,
             patients.last_name AS patient_last_name,
-            departments.name AS department_name
+            departments.name AS department_name,
+            specializations.name AS specialization_name
         FROM doctors
         LEFT JOIN appointments ON doctors.id = appointments.doctor_id
         LEFT JOIN patients ON appointments.patient_id = patients.id
@@ -89,7 +90,7 @@ export async function getDoctorById(id: string) {
             mobileNo: result[0].mobile_no,
             gender: result[0].gender,
             departmentName: result[0].department_name,
-            specialization: result[0].specialization,
+            specialization: result[0].specialization_name,
         },
         appointments: result.map((res: any) => {
             if (!res.appointment_id) return null;
