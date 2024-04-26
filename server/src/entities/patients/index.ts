@@ -18,6 +18,8 @@ export async function getPatients() {
 export async function registerPatient(dataToInsert: Patient) {
     const { firstName, lastName, dateOfBirth, gender, mobileNo, email, password } = dataToInsert;
     await db.query("INSERT INTO patients(first_name, last_name, date_of_birth, gender, mobile_no, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)", [firstName, lastName, dateOfBirth, gender, mobileNo, email, password])
+    const [result] = await db.query("SELECT id FROM patients ORDER BY created_at DESC") as any;
+    return result[0].id;
 }
 
 export async function getPatientByEmail(email: string) {
