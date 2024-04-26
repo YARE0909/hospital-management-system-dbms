@@ -19,8 +19,16 @@ export async function getDoctorByEmail(email: string) {
 }
 
 export async function getDoctors() {
-    const [result] = await db.query<SQLQueryResult<Doctor[]>>("SELECT * FROM doctors");
-    const doctors = result.map((res) => ({
+    const [result] = await db.query(`
+    SELECT 
+        *,
+        specializations.name AS specialization_name,
+        departments.name AS department_name
+    FROM doctors
+    INNER JOIN departments ON specializations.department_id = departments.id
+    INNER JOIN specializations ON doctors.specialization_id = specializations.id
+    `) as any;
+    const doctors = result.map((res: any) => ({
         id: res.id,
         firstName: res.first_name,
         lastName: res.last_name,
@@ -28,7 +36,8 @@ export async function getDoctors() {
         gender: res.gender,
         mobileNo: res.mobile_no,
         email: res.email,
-        specialization: res.specialization,
+        specialization: res.specialization_name,
+        departmentName: res.department_name,
     }));
 
     return doctors;
