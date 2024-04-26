@@ -25,8 +25,8 @@ export async function getDoctors() {
         specializations.name AS specialization_name,
         departments.name AS department_name
     FROM doctors
-    INNER JOIN departments ON specializations.department_id = departments.id
     INNER JOIN specializations ON doctors.specialization_id = specializations.id
+    INNER JOIN departments ON specializations.department_id = departments.id
     `) as any;
     const doctors = result.map((res: any) => ({
         id: res.id,
