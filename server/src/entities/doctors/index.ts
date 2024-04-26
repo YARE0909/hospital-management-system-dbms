@@ -22,7 +22,7 @@ export async function getDoctors() {
     const [result] = await db.query(`
     SELECT 
         *,
-        doctors.id AS doctor_id
+        doctors.id AS doctor_id,
         specializations.name AS specialization_name,
         departments.name AS department_name
     FROM doctors
