@@ -22,6 +22,7 @@ export async function getDoctors() {
     const [result] = await db.query(`
     SELECT 
         *,
+        doctors.id AS doctor_id
         specializations.name AS specialization_name,
         departments.name AS department_name
     FROM doctors
@@ -29,7 +30,7 @@ export async function getDoctors() {
     INNER JOIN departments ON specializations.department_id = departments.id
     `) as any;
     const doctors = result.map((res: any) => ({
-        id: res.id,
+        id: res.doctor_id,
         firstName: res.first_name,
         lastName: res.last_name,
         dateOfBirth: res.date_of_birth,
