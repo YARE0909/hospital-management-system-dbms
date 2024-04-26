@@ -4,7 +4,7 @@ import PatientListType from "@/lib/types/PatientListType";
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import nookies from "nookies";
-import RegisterPatient from "./_components/RegisterPatient";
+import RegisterPatient from "./_components/registerPatient";
 import { PatientListTable } from "./_components/patientTable";
 
 const Index = ({ patientList }: { patientList: PatientListType[] }) => {
