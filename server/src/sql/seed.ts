@@ -12,8 +12,8 @@ const db = await mysql.createConnection({
 
 await db.connect().then(() => console.log("Connected to MySQL"));
 
+await db.query("START TRANSACTION");
 try {
-    await db.query("START TRANSACTION");
     await db.query(
         `INSERT INTO patients(first_name, last_name, date_of_birth, gender, email, mobile_no, password)
         VALUES ('John', 'Doe', '1990-01-31', 'male', 'john.doe@gmail.com', '1234567890', 'admin123')`

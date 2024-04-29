@@ -12,8 +12,8 @@ export default async function registerPatients(req: Request, res: Response): Pro
     const response: ServerResponse = { hasError: true, message: "An error occured while registering patient", data: null }
 
     try {
-        const { firstName, lastName = null, dateOfBirth, gender, mobileNo, email, height, weight, bloodPressure, doctorId } = SchemaValidators.RegisterPatientSchema.parse(req.body);
-        const patientInfo = await Patients.registerPatient({
+        const { firstName, lastName = null, dateOfBirth, gender, mobileNo, email } = SchemaValidators.RegisterPatientSchema.parse(req.body);
+        await Patients.registerPatient({
             firstName,
             lastName,
             dateOfBirth,
@@ -22,21 +22,6 @@ export default async function registerPatients(req: Request, res: Response): Pro
             email,
             password: Utils.randomString(8)
         });
-
-        const appointmentInfo = await Appointments.createAppointment({
-            patientId: patientInfo?.id,
-            doctorId,
-            appointmentDate: new Date(),
-            status: AppointmentStatus.COMPLETED,
-            type: AppointmentType.INITIAL_CHECK_UP,
-        });
-
-        await MedicalRecords.createMedicalRecord({
-            appointmentId: appointmentInfo?.id,
-            height,
-            weight,
-            bloodPressure,
-        })
 
         response.hasError = false;
         response.message = "Patient registered successfully";
