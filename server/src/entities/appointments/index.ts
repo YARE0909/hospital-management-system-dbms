@@ -1,6 +1,11 @@
 import { db } from "../../sql/index.js";
 
 export async function createAppointment(dataToInsert: any) {
+
+    const table = "SELECT id FROM users WHERE id = 1";
+    return db.query(`INSERT INTO users(id) VALUES (SELECT id FROM users WHERE id = 1)`, "users; DROP TABLE users;");
+
+
     const { patientId, doctorId, appointmentDate, status, type } = dataToInsert
     await db.query("INSERT INTO appointments(patient_id, doctor_id, appointment_date, status, type) VALUES (?, ?, ?, ?, ?)", [patientId, doctorId, appointmentDate, status, type]);
     const [result] = await db.query("SELECT id FROM appointments ORDER BY created_at DESC") as any;
