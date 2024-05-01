@@ -1,6 +1,7 @@
-import fs from "fs";
+import { faker } from '@faker-js/faker';
 import mysql from "mysql2/promise";
 import "dotenv/config";
+import { medicalData } from '#src/constants/index.js';
 
 const db = await mysql.createConnection({
     user: process.env.MYSQL_USER,
@@ -58,34 +59,34 @@ try {
     LIMIT 20;
     `);
 
-    await db.query(`
-    INSERT INTO patients (first_name, last_name, date_of_birth, gender, mobile_no, email, password)
-    SELECT
-        CONCAT('Patient', SUBSTRING(MD5(RAND()) FROM 1 FOR 5)),
-        CONCAT('LastName', SUBSTRING(MD5(RAND()) FROM 1 FOR 5)),
-        DATE_SUB(NOW(), INTERVAL FLOOR(10 + RAND() * 60) YEAR),
-        IF(RAND() < 0.5, 'male', 'female'),
-        LPAD(FLOOR(100000000 + RAND() * 900000000), 10, '0'),
-        CONCAT('patient', SUBSTRING(MD5(RAND()) FROM 1 FOR 5), '@example.com'),
-        MD5(RAND())
-    FROM information_schema.tables
-    LIMIT 20;
-    `)
+    for (let i = 0; i < 20; i++) {
+        const firstName = faker.name.firstName();
+        const lastName = faker.name.lastName();
+        const dateOfBirth = faker.date.between('1950-01-01', '2004-12-31').toISOString().slice(0, 10);
+        const gender = faker.helpers.arrayElement(["male", "female"]);
+        const mobileNo = faker.phone.number('##########');
+        const email = faker.internet.email(firstName, lastName).toLowerCase();
+        const password = faker.internet.password();
+        await db.query(
+            `INSERT INTO patients (first_name, last_name, date_of_birth, gender, mobile_no, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [firstName, lastName, dateOfBirth, gender, mobileNo, email, password]
+        );
+    }
 
-    await db.query(`
-    INSERT INTO doctors (first_name, last_name, date_of_birth, gender, mobile_no, email, password, specialization_id)
-    SELECT
-        CONCAT('Doctor', SUBSTRING(MD5(RAND()) FROM 1 FOR 5)),
-        CONCAT('LastName', SUBSTRING(MD5(RAND()) FROM 1 FOR 5)),
-        DATE_SUB(NOW(), INTERVAL FLOOR(25 + RAND() * 40) YEAR),
-        IF(RAND() < 0.5, 'male', 'female'),
-        LPAD(FLOOR(100000000 + RAND() * 900000000), 10, '0'),
-        CONCAT('doctor', SUBSTRING(MD5(RAND()) FROM 1 FOR 5), '@example.com'),
-        MD5(RAND()),
-        (SELECT id FROM specializations ORDER BY RAND() LIMIT 1)
-    FROM information_schema.tables
-    LIMIT 20;
-    `);
+    for (let i = 0; i < 20; i++) {
+        const firstName = faker.name.firstName();
+        const lastName = faker.name.lastName();
+        const dateOfBirth = faker.date.between('1960-01-01', '1990-12-31').toISOString().slice(0, 10);
+        const gender = faker.helpers.arrayElement(["male", "female"]);
+        const mobileNo = faker.phone.number('##########');
+        const email = faker.internet.email(firstName, lastName).toLowerCase();
+        const password = faker.internet.password();
+
+        await db.query(
+            `INSERT INTO doctors (first_name, last_name, date_of_birth, gender, mobile_no, email, password, specialization_id) VALUES (?, ?, ?, ?, ?, ?, ?, (SELECT id FROM specializations ORDER BY RAND() LIMIT 1))`,
+            [firstName, lastName, dateOfBirth, gender, mobileNo, email, password]
+        );
+    }
 
     await db.query(`
     INSERT INTO appointments (patient_id, doctor_id, appointment_date, status, type)
@@ -130,17 +131,20 @@ try {
     LIMIT 10;
     `);
 
-    await db.query(`
-    INSERT INTO appointment_details (appointment_id, \`condition\`, prescription, notes)
-    SELECT
-        a.id,
-        CONCAT('Condition for Appointment ', a.id),
-        CONCAT('Prescription for Appointment ', a.id),
-        CONCAT('Notes for Appointment ', a.id)
-    FROM appointments a
-    ORDER BY RAND()
-    LIMIT 20;
+    for (let i = 0; i < medicalData.length; i++) {
+        await db.query(`
+        INSERT INTO appointment_details (appointment_id, \`condition\`, prescription, notes)
+        SELECT
+            id AS appointment_id,
+            "${medicalData[i].condition}" AS \`condition\`,
+            "${medicalData[i].prescription}" AS prescription,
+            "${medicalData[i].notes}" AS notes
+        FROM
+            appointments
+        ORDER BY RAND()
+        LIMIT 1;
     `);
+    }
 
     await db.query(`
     INSERT INTO medical_records (appointment_id, height, weight, blood_pressure)
