@@ -60,7 +60,7 @@ export function DoctorListTable({
                 key={doctor.id}
               >
                 <TableCell className="font-bold">
-                  {doctor.firstName} {doctor.lastName}
+                  Dr. {doctor.firstName} {doctor.lastName}
                 </TableCell>
                 <TableCell>{doctor.email}</TableCell>
                 <TableCell>
